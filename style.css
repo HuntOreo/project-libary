@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 400;
+  src: 
+    url('fonts/roboto-variablefont.woff') format('woff'),
+    url('fonts/roboto-variablefont.woff2') format('woff2');
+}
+
+body {
+  font-family: 'Roboto';
+}
+
+h1 {
+  font-family: 'Roboto';
+}

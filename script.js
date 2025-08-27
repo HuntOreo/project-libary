@@ -13,28 +13,7 @@ function storeBook(title, author, publishDate) {
   bookShelf.push(book);
 }
 
-/* 
-
-  Write a function that loops through the array and displays the books in
-  a table or grid.
-
-*/
-
 function displayBooks() {
-  // grab body element
-    // build a container for the grid of books
-      // for each book, create a "card" element to render the data
-
-      /* 
-        Card Structure:
-          .card
-            .container
-              .title
-              .author
-              .publishYear
-            
-      */
-
   const body = document.querySelector('body');
   const gridContainerElm = document.createElement('div');
   gridContainerElm.classList.toggle('container');
@@ -68,5 +47,8 @@ function displayBooks() {
 storeBook('Dracula', 'Bram Stoker', 1897);
 storeBook('The Hunger Games', 'Suzanne Collins', 2008);
 storeBook('The Catcher in the Rye', 'J. D. Salinger', 1951);
+storeBook('Lolita', 'Vladimir Nabokov', 1955);
+storeBook('The Lightning Thief', 'Rick Riordan', 2005);
+
 
 displayBooks();

@@ -1,14 +1,17 @@
 let bookShelf = [];
 const body = document.querySelector('body');
-const shelf = document.querySelector('.shelf')
+
+// Form elements
 const showFormBtn = document.querySelector('.showFormBtn');
 const formContainer = document.querySelector('.form-container');
 const addBookBtn = document.querySelector('.addBookBtn');
 const cancelBtn = document.querySelector('.cancelBtn');
 
-const gridContainerElm = document.createElement('div');
-gridContainerElm.classList.toggle('container');
-shelf.appendChild(gridContainerElm);
+// Bookshelf elements
+const shelf = document.querySelector('.shelf')
+const shelfContainerElm = document.createElement('div');
+shelfContainerElm.classList.toggle('container');
+shelf.appendChild(shelfContainerElm);
 
 function Book(title, author, publishDate, cover) {
   this.title = title;
@@ -50,7 +53,7 @@ function buildBookCard(book) {
     deleteBook(cardElm);
   })
 
-  gridContainerElm.appendChild(cardElm);
+  shelfContainerElm.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(deleteBtn);
   cardContainerElm.appendChild(titleElm);

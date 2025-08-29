@@ -128,3 +128,7 @@ form .required::before {
 .hide-overflow {
   overflow: hidden;
 }
+
+.read {
+  background-color: gold;
+}

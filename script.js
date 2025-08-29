@@ -22,12 +22,6 @@ function Book(title, author, publishDate, cover) {
   }
 }
 
-function storeBook(title, author, publishDate, cover) {
-  const book = new Book(title, author, publishDate, cover);
-
-  bookShelf.push(book);
-}
-
 function buildBookCard(book) {
   const cardElm = document.createElement('div');
   const cardContainerElm = document.createElement('div');
@@ -54,7 +48,14 @@ function buildBookCard(book) {
   cardContainerElm.appendChild(publishDateElm);
 }
 
-function renderBooksOnLoad() {
+function storeBook(title, author, publishDate, cover) {
+  const book = new Book(title, author, publishDate, cover);
+  bookShelf.push(book);
+}
+
+function renderBooks() {
+  shelf.firstElementChild.textContent = '';
+  console.log(bookShelf)
   for (book of bookShelf) {
     buildBookCard(book);
   }
@@ -63,7 +64,6 @@ function renderBooksOnLoad() {
 function submitBook(event) {
   event.preventDefault();
 
-  let newBook;
   const bookForm = document.querySelector('#book-form');
   const formData = new FormData(bookForm);
   let bookInfo = {};
@@ -78,11 +78,12 @@ function submitBook(event) {
   let coverLink = bookInfo["cover-link"];
 
   if (coverLink === "") {
-    newBook = new Book(title, author, publishDate);
+    storeBook(title, author, publishDate);
   } else {
-    newBook = new Book(title, author, publishDate, coverLink);
+    storeBook(title, author, publishDate, coverLink);
   }
-  buildBookCard(newBook);
+
+  renderBooks();
 }
 
 function toggleForm() {
@@ -93,7 +94,6 @@ function toggleForm() {
 showFormBtn.addEventListener('click', toggleForm);
 cancelBtn.addEventListener('click', toggleForm);
 addBookBtn.addEventListener('click', (event) => {
-
   const requiredFields = document.querySelectorAll('input[required]');
   let requiredFlag = true;
   for (input of requiredFields) {
@@ -139,4 +139,4 @@ storeBook(
   'https://images-na.ssl-images-amazon.com/images/P/0786838655.01._SX450_SY635_SCLZZZZZZZ_.jpg'
 );
 
-renderBooksOnLoad();
+renderBooks();

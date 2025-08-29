@@ -25,6 +25,11 @@ function Book(title, author, publishDate, cover) {
   }
 }
 
+function storeBook(title, author, publishDate, cover) {
+  const book = new Book(title, author, publishDate, cover);
+  bookShelf.push(book);
+}
+
 function buildBookCard(book) {
   const cardElm = document.createElement('div');
   const cardContainerElm = document.createElement('div');
@@ -60,11 +65,6 @@ function buildBookCard(book) {
   cardContainerElm.appendChild(coverElm);
   cardContainerElm.appendChild(authorElm);
   cardContainerElm.appendChild(publishDateElm);
-}
-
-function storeBook(title, author, publishDate, cover) {
-  const book = new Book(title, author, publishDate, cover);
-  bookShelf.push(book);
 }
 
 function renderBooks() {

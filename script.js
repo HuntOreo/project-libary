@@ -13,16 +13,26 @@ const shelfContainerElm = document.createElement('div');
 shelfContainerElm.classList.toggle('container');
 shelf.appendChild(shelfContainerElm);
 
+// Add a flag for determining if a book is read or not.
+//  On the form, add a checkbox for if the book is read.
+
+
 function Book(title, author, publishDate, cover) {
   this.title = title;
   this.author = author;
   this.publishDate = publishDate;
   this.cover = './img/placeholder.png'
   this.id = crypto.randomUUID();
+  this.isRead = false;
+
+  this.updateReadFlag = function () {
+    this.isRead = !this.isRead;
+  }
 
   if (cover) {
     this.cover = cover
   }
+
 }
 
 function storeBook(title, author, publishDate, cover) {
@@ -34,33 +44,40 @@ function buildBookCard(book) {
   const cardElm = document.createElement('div');
   const cardContainerElm = document.createElement('div');
   const deleteBtn = document.createElement('button');
+  const toggleReadBtn = document.createElement('button');
   const titleElm = document.createElement('h2');
   const coverElm = document.createElement('img');
   const authorElm = document.createElement('p');
   const publishDateElm = document.createElement('p');
 
-  
+
   cardElm.classList.toggle('card');
   cardContainerElm.classList.toggle('container');
   deleteBtn.classList.toggle('deleteBtn');
+  toggleReadBtn.classList.toggle('readBtn');
   titleElm.classList.toggle('title');
   coverElm.classList.toggle('cover');
 
+  if (book.isRead) {
+    cardElm.classList.toggle('read')
+  }
+
   cardElm.dataset.id = book.id;
-  
+
   deleteBtn.innerText = 'Delete';
+  toggleReadBtn.innerText = 'Mark as Read';
   titleElm.innerText = book.title;
   authorElm.innerText = book.author;
   publishDateElm.innerText = book.publishDate;
   coverElm.src = book.cover;
 
-  deleteBtn.addEventListener('click', () => {
-    deleteBook(cardElm);
-  })
+  deleteBtn.addEventListener('click', () => deleteBook(cardElm));
+  toggleReadBtn.addEventListener('click', () => toggleRead(cardElm));
 
   shelfContainerElm.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(deleteBtn);
+  cardContainerElm.appendChild(toggleReadBtn);
   cardContainerElm.appendChild(titleElm);
   cardContainerElm.appendChild(coverElm);
   cardContainerElm.appendChild(authorElm);
@@ -77,7 +94,29 @@ function renderBooks() {
 function deleteBook(bookCard) {
   const markedId = bookCard.dataset.id;
   const newBookShelf = bookShelf.filter(book => {
-    if(markedId !== book.id) {
+    if (markedId !== book.id) {
+      return book;
+    };
+  });
+
+  bookShelf = [...newBookShelf];
+  renderBooks();
+}
+
+function toggleRead(bookCard) {
+  const markedId = bookCard.dataset.id;
+  const grabbedBook = bookShelf.filter(book => {
+    if (markedId === book.id) {
+      return book;
+    };
+  })[0];
+
+  grabbedBook.updateReadFlag();
+
+  const newBookShelf = bookShelf.map(book => {
+    if (book.id === markedId) {
+      return grabbedBook;
+    } else {
       return book;
     }
   })

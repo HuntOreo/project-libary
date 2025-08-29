@@ -9,7 +9,35 @@
   </head>
 
   <body>
-    <h1>Library</h1>
+    <header>
+      <div class="wrapper">
+        <h1>Library</h1>
+        <button>Add</button>
+      </div>
+    </header>
+
+    <div class="form-container">
+      <form action="" id="add-book">
+        <div class="wrapper">
+          <label for="title">* Title</label>
+          <input type="text" name="title" id="title" required>
+        </div>
+        <div class="wrapper">
+          <label for="author">* Author</label>
+          <input type="text" name="author" id="author" required>
+        </div>
+        <div class="wrapper">
+          <label for="publish-date">* Publish Date</label>
+          <input type="text" name="publish-date" id="publish-date" required>
+        </div>
+        <div class="wrapper">
+          <label for="cover-link">Cover Link</label>
+          <input type="text" name="cover-link" id="cover-link">
+        </div>
+        <p>* Required</p>
+        <button type="button">Add</button>
+      </form>
+    </div>
 
     <script src="./script.js"></script>
   </body>

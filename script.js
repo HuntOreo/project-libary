@@ -13,10 +13,6 @@ const shelfContainerElm = document.createElement('div');
 shelfContainerElm.classList.toggle('container');
 shelf.appendChild(shelfContainerElm);
 
-// Add a flag for determining if a book is read or not.
-//  On the form, add a checkbox for if the book is read.
-
-
 function Book(title, author, publishDate, cover) {
   this.title = title;
   this.author = author;
@@ -35,12 +31,21 @@ function Book(title, author, publishDate, cover) {
 
 }
 
-function storeBook(title, author, publishDate, cover) {
-  const book = new Book(title, author, publishDate, cover);
+function storeBook({ title, author, publishDate, cover, readFlag }) {
+  let book;
+  if (cover === "") {
+    book = new Book(title, author, publishDate);
+  } else {
+    book = new Book(title, author, publishDate, cover);
+  }
+
+  if (readFlag) { book.updateReadFlag() };
+
   bookShelf.push(book);
 }
 
 function buildBookCard(book) {
+  // Build DOM elements
   const cardElm = document.createElement('div');
   const cardContainerElm = document.createElement('div');
   const deleteBtn = document.createElement('button');
@@ -50,7 +55,7 @@ function buildBookCard(book) {
   const authorElm = document.createElement('p');
   const publishDateElm = document.createElement('p');
 
-
+  // Assign CSS classes
   cardElm.classList.toggle('card');
   cardContainerElm.classList.toggle('container');
   deleteBtn.classList.toggle('deleteBtn');
@@ -74,6 +79,7 @@ function buildBookCard(book) {
   deleteBtn.addEventListener('click', () => deleteBook(cardElm));
   toggleReadBtn.addEventListener('click', () => toggleRead(cardElm));
 
+  // Render DOM elements
   shelfContainerElm.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(deleteBtn);
@@ -136,16 +142,24 @@ function submitBook(event) {
     bookInfo[entry[0]] = entry[1];
   }
 
+  console.log(bookInfo);
+
   const title = bookInfo["title"];
   const author = bookInfo["author"];
   const publishDate = bookInfo["publish-date"];
   let coverLink = bookInfo["cover-link"];
+  let readFlag;
+  bookInfo.readFlag ? readFlag = true : readFlag = false;
 
-  if (coverLink === "") {
-    storeBook(title, author, publishDate);
-  } else {
-    storeBook(title, author, publishDate, coverLink);
+  const book = {
+    "title": title,
+    "author": author,
+    "publishDate": publishDate,
+    "coverLink": coverLink,
+    "readFlag": readFlag,
   }
+
+  storeBook(book);
 
   renderBooks();
 }
@@ -172,35 +186,35 @@ addBookBtn.addEventListener('click', (event) => {
   }
 });
 
-storeBook(
-  'Dracula',
-  'Bram Stoker',
-  1897,
-  'https://images-na.ssl-images-amazon.com/images/P/014143984X.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-);
-storeBook(
-  'The Hunger Games',
-  'Suzanne Collins',
-  2008,
-  'https://images-na.ssl-images-amazon.com/images/P/0439023521.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-);
-storeBook(
-  'The Catcher in the Rye',
-  'J. D. Salinger',
-  1951,
-  'https://images-na.ssl-images-amazon.com/images/P/0316769177.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-);
-storeBook(
-  'Lolita',
-  'Vladimir Nabokov',
-  1955,
-  'https://images-na.ssl-images-amazon.com/images/P/0679723161.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-);
-storeBook(
-  'The Lightning Thief',
-  'Rick Riordan',
-  2005,
-  'https://images-na.ssl-images-amazon.com/images/P/0786838655.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-);
+storeBook({
+  "title": 'Dracula',
+  "author": 'Bram Stoker',
+  "publishDate": 1897,
+  "cover": 'https://images-na.ssl-images-amazon.com/images/P/014143984X.01._SX450_SY635_SCLZZZZZZZ_.jpg'
+});
+storeBook({
+  "title": 'The Hunger Games',
+  "author": 'Suzanne Collins',
+  "publishDate": 2008,
+  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0439023521.01._SX450_SY635_SCLZZZZZZZ_.jpg'
+});
+storeBook({
+  "title": 'The Catcher in the Rye',
+  "author": 'J. D. Salinger',
+  "publishDate": 1951,
+  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0316769177.01._SX450_SY635_SCLZZZZZZZ_.jpg'
+});
+storeBook({
+  "title": 'Lolita',
+  "author": 'Vladimir Nabokov',
+  "publishDate": 1955,
+  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0679723161.01._SX450_SY635_SCLZZZZZZZ_.jpg'
+});
+storeBook({
+  "title": 'The Lightning Thief',
+  "author": 'Rick Riordan',
+  "publishDate": 2005,
+  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0786838655.01._SX450_SY635_SCLZZZZZZZ_.jpg'
+});
 
 renderBooks();

@@ -39,17 +39,19 @@ header button {
   height: min-content;
 }
 
-body > .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 10px;
+body .shelf {
   width: min(100%, 1000px);
+}
+
+.shelf .container {
   height: 100%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  overflow: scroll;
 }
 
 .card {
-  padding: 10px;
-
   border: 1px solid black;
 }
 
@@ -69,7 +71,7 @@ body > .container {
 }
 
 .card p {
-  margin-top: 10px;
+  margin: 10px;
 }
 
 .form-container {

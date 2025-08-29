@@ -1,4 +1,8 @@
 let bookShelf = [];
+const body = document.querySelector('body');
+const shelf = document.querySelector('.shelf')
+const showFormBtn = document.querySelector('.showFormBtn');
+const formContainer = document.querySelector('.form-container');
 const addBookBtn = document.querySelector('.addBookBtn');
 
 function Book(title, author, publishDate, cover) {
@@ -17,11 +21,10 @@ function storeBook(title, author, publishDate, cover) {
 
 // Render books onto page
 function displayBooks() {
-  const body = document.querySelector('body');
   const gridContainerElm = document.createElement('div');
   gridContainerElm.classList.toggle('container');
 
-  body.appendChild(gridContainerElm);
+  shelf.appendChild(gridContainerElm);
 
   for (book of bookShelf) {
 
@@ -40,7 +43,6 @@ function displayBooks() {
     titleElm.innerText = book.title;
     authorElm.innerText = book.author;
     publishDateElm.innerText = book.publishDate;
-    console.log(book.cover);
     coverElm.src = book.cover;
 
     gridContainerElm.appendChild(cardElm);
@@ -51,6 +53,14 @@ function displayBooks() {
     cardContainerElm.appendChild(publishDateElm);
   }
 }
+
+function toggleForm() {
+  formContainer.classList.toggle('show-form');
+  body.classList.toggle('hide-overflow');
+}
+
+showFormBtn.addEventListener('click', toggleForm);
+addBookBtn.addEventListener('click', toggleForm);
 
 storeBook(
   'Dracula',

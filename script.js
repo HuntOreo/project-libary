@@ -55,7 +55,6 @@ function storeBook(title, author, publishDate, cover) {
 
 function renderBooks() {
   shelf.firstElementChild.textContent = '';
-  console.log(bookShelf)
   for (book of bookShelf) {
     buildBookCard(book);
   }

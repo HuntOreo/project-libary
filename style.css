@@ -2,15 +2,17 @@
   font-family: 'Roboto';
   font-weight: 400;
   src: 
-    url('fonts/roboto-variablefont.woff') format('woff'),
-    url('fonts/roboto-variablefont.woff2') format('woff2');
+  url('fonts/roboto-variablefont.woff') format('woff'),
+  url('fonts/roboto-variablefont.woff2') format('woff2');
 }
 
 body {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: auto;
   min-height: 100vh;
   
   font-family: 'Roboto';
@@ -68,4 +70,60 @@ body > .container {
 
 .card p {
   margin-top: 10px;
+}
+
+.form-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  background-color: #5c5c5c9c;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 30px;
+  height: min-content;
+  width: min-content;
+
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+form p {
+  font-size: 0.8em;
+  color: gray;
+}
+
+form .wrapper {
+  display: flex;
+}
+
+form label {
+  position: relative;
+  min-width: 100px;
+}
+
+form .required::before {
+  position: absolute;
+  left: -10px;
+  content: '*';
+}
+
+/* Javascript classes */
+.show-form {
+  display: flex;
+}
+
+.hide-overflow {
+  overflow: hidden;
 }

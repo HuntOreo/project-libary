@@ -1,4 +1,5 @@
 let bookShelf = [];
+const addBookBtn = document.querySelector('.addBookBtn');
 
 function Book(title, author, publishDate, cover) {
   this.title = title;
@@ -81,6 +82,5 @@ storeBook(
   2005,
   'https://images-na.ssl-images-amazon.com/images/P/0786838655.01._SX450_SY635_SCLZZZZZZZ_.jpg'
 );
-
 
 displayBooks();

@@ -4,13 +4,22 @@ const shelf = document.querySelector('.shelf')
 const showFormBtn = document.querySelector('.showFormBtn');
 const formContainer = document.querySelector('.form-container');
 const addBookBtn = document.querySelector('.addBookBtn');
+const cancelBtn = document.querySelector('.cancelBtn');
+
+const gridContainerElm = document.createElement('div');
+gridContainerElm.classList.toggle('container');
+shelf.appendChild(gridContainerElm);
 
 function Book(title, author, publishDate, cover) {
   this.title = title;
   this.author = author;
   this.publishDate = publishDate;
-  this.cover = cover;
+  this.cover = './img/placeholder.png'
   this.id = crypto.randomUUID();
+
+  if (cover) {
+    this.cover = cover
+  }
 }
 
 function storeBook(title, author, publishDate, cover) {
@@ -19,39 +28,61 @@ function storeBook(title, author, publishDate, cover) {
   bookShelf.push(book);
 }
 
-// Render books onto page
-function displayBooks() {
-  const gridContainerElm = document.createElement('div');
-  gridContainerElm.classList.toggle('container');
+function buildBookCard(book) {
+  const cardElm = document.createElement('div');
+  const cardContainerElm = document.createElement('div');
+  const titleElm = document.createElement('h2');
+  const coverElm = document.createElement('img');
+  const authorElm = document.createElement('p');
+  const publishDateElm = document.createElement('p');
 
-  shelf.appendChild(gridContainerElm);
+  cardElm.classList.toggle('card');
+  cardContainerElm.classList.toggle('container');
+  titleElm.classList.toggle('title');
+  coverElm.classList.toggle('cover');
 
+  titleElm.innerText = book.title;
+  authorElm.innerText = book.author;
+  publishDateElm.innerText = book.publishDate;
+  coverElm.src = book.cover;
+
+  gridContainerElm.appendChild(cardElm);
+  cardElm.appendChild(cardContainerElm);
+  cardContainerElm.appendChild(titleElm);
+  cardContainerElm.appendChild(coverElm);
+  cardContainerElm.appendChild(authorElm);
+  cardContainerElm.appendChild(publishDateElm);
+}
+
+function renderBooksOnLoad() {
   for (book of bookShelf) {
-
-    const cardElm = document.createElement('div');
-    const cardContainerElm = document.createElement('div');
-    const titleElm = document.createElement('h2');
-    const coverElm = document.createElement('img');
-    const authorElm = document.createElement('p');
-    const publishDateElm = document.createElement('p');
-
-    cardElm.classList.toggle('card');
-    cardContainerElm.classList.toggle('container');
-    titleElm.classList.toggle('title');
-    coverElm.classList.toggle('cover');
-
-    titleElm.innerText = book.title;
-    authorElm.innerText = book.author;
-    publishDateElm.innerText = book.publishDate;
-    coverElm.src = book.cover;
-
-    gridContainerElm.appendChild(cardElm);
-    cardElm.appendChild(cardContainerElm);
-    cardContainerElm.appendChild(titleElm);
-    cardContainerElm.appendChild(coverElm);
-    cardContainerElm.appendChild(authorElm);
-    cardContainerElm.appendChild(publishDateElm);
+    buildBookCard(book);
   }
+}
+
+function submitBook(event) {
+  event.preventDefault();
+
+  let newBook;
+  const bookForm = document.querySelector('#book-form');
+  const formData = new FormData(bookForm);
+  let bookInfo = {};
+
+  for (entry of formData) {
+    bookInfo[entry[0]] = entry[1];
+  }
+
+  const title = bookInfo["title"];
+  const author = bookInfo["author"];
+  const publishDate = bookInfo["publish-date"];
+  let coverLink = bookInfo["cover-link"];
+
+  if (coverLink === "") {
+    newBook = new Book(title, author, publishDate);
+  } else {
+    newBook = new Book(title, author, publishDate, coverLink);
+  }
+  buildBookCard(newBook);
 }
 
 function toggleForm() {
@@ -60,7 +91,22 @@ function toggleForm() {
 }
 
 showFormBtn.addEventListener('click', toggleForm);
-addBookBtn.addEventListener('click', toggleForm);
+cancelBtn.addEventListener('click', toggleForm);
+addBookBtn.addEventListener('click', (event) => {
+
+  const requiredFields = document.querySelectorAll('input[required]');
+  let requiredFlag = true;
+  for (input of requiredFields) {
+    if (input.value === '') {
+      requiredFlag = false;
+    }
+  }
+
+  if (requiredFlag) {
+    submitBook(event);
+    toggleForm();
+  }
+});
 
 storeBook(
   'Dracula',
@@ -93,4 +139,4 @@ storeBook(
   'https://images-na.ssl-images-amazon.com/images/P/0786838655.01._SX450_SY635_SCLZZZZZZZ_.jpg'
 );
 
-displayBooks();
+renderBooksOnLoad();

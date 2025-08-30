@@ -20,15 +20,11 @@ function Book(title, author, publishDate, cover) {
   this.cover = './img/placeholder.png'
   this.id = crypto.randomUUID();
   this.isRead = false;
-
   this.updateReadFlag = function () {
     this.isRead = !this.isRead;
   }
 
-  if (cover) {
-    this.cover = cover
-  }
-
+  if (cover) { this.cover = cover }
 }
 
 function storeBook({ title, author, publishDate, cover, readFlag }) {
@@ -38,7 +34,6 @@ function storeBook({ title, author, publishDate, cover, readFlag }) {
   } else {
     book = new Book(title, author, publishDate, cover);
   }
-
   if (readFlag) { book.updateReadFlag() };
 
   bookShelf.push(book);
@@ -57,7 +52,6 @@ function buildBookCard(book) {
   const authorElm = document.createElement('p');
   const publishDateElm = document.createElement('p');
 
-
   toggleReadBox.type = "checkbox";
   toggleReadBox.checked = book.isRead;
   toggleReadBox.id = `readCheckbox-${book.id}`;
@@ -71,10 +65,7 @@ function buildBookCard(book) {
   toggleReadBox.classList.toggle('readBtn');
   titleElm.classList.toggle('title');
   coverElm.classList.toggle('cover');
-
-  if (book.isRead) {
-    cardElm.classList.toggle('read')
-  }
+  if (book.isRead) { cardElm.classList.toggle('read') }
 
   cardElm.dataset.id = book.id;
 
@@ -146,8 +137,6 @@ function submitBook(event) {
     bookInfo[entry[0]] = entry[1];
   }
 
-  console.log(bookInfo);
-
   const title = bookInfo["title"];
   const author = bookInfo["author"];
   const publishDate = bookInfo["publish-date"];
@@ -164,7 +153,6 @@ function submitBook(event) {
   }
 
   storeBook(book);
-
   renderBooks();
 }
 

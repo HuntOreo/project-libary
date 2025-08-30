@@ -102,11 +102,7 @@ function renderBooks() {
 
 function deleteBook(bookCard) {
   const markedId = bookCard.dataset.id;
-  const newBookShelf = bookShelf.filter(book => {
-    if (markedId !== book.id) {
-      return book;
-    };
-  });
+  const newBookShelf = bookShelf.filter(book => markedId !== book.id);
 
   bookShelf = [...newBookShelf];
   renderBooks();
@@ -115,11 +111,7 @@ function deleteBook(bookCard) {
 function toggleRead(bookCard) {
   bookCard.classList.toggle('read');
   const markedId = bookCard.dataset.id;
-  const grabbedBook = bookShelf.filter(book => {
-    if (markedId === book.id) {
-      return book;
-    };
-  })[0];
+  const grabbedBook = bookShelf.filter(book => markedId === book.id)[0];
 
   grabbedBook.updateReadFlag();
   const index = bookShelf.findIndex(book => book.id === markedId);

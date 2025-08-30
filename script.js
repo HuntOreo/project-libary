@@ -46,9 +46,11 @@ function buildBookCard(book) {
   const deleteBtn = document.createElement('button');
   const checkboxWrapper = document.createElement('div');
   const readLabel = document.createElement('label');
-  const toggleReadBox= document.createElement('input');
+  const toggleReadBox = document.createElement('input');
   const titleElm = document.createElement('h2');
+  const coverWrapper = document.createElement('div');
   const coverElm = document.createElement('img');
+  const coverUpdateIcon = document.createElement('img');
   const authorElm = document.createElement('p');
   const publishDateElm = document.createElement('p');
 
@@ -64,7 +66,9 @@ function buildBookCard(book) {
   checkboxWrapper.classList.toggle('wrapper');
   toggleReadBox.classList.toggle('readBtn');
   titleElm.classList.toggle('title');
+  coverWrapper.classList.toggle('wrapper');
   coverElm.classList.toggle('cover');
+  coverUpdateIcon.classList.toggle('cover-update-icon');
   if (book.isRead) { cardElm.classList.toggle('read') }
 
   cardElm.dataset.id = book.id;
@@ -75,6 +79,7 @@ function buildBookCard(book) {
   authorElm.textContent = book.author;
   publishDateElm.textContent = book.publishDate;
   coverElm.src = book.cover;
+  coverUpdateIcon.src = './img/icons/edit-img.svg';
 
   deleteBtn.addEventListener('click', () => deleteBook(cardElm));
   toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
@@ -83,12 +88,15 @@ function buildBookCard(book) {
   checkboxWrapper.appendChild(readLabel);
   checkboxWrapper.appendChild(toggleReadBox);
 
+  coverWrapper.appendChild(coverElm);
+  coverWrapper.appendChild(coverUpdateIcon);
+
   shelfContainerElm.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(deleteBtn);
   cardContainerElm.appendChild(checkboxWrapper);
   cardContainerElm.appendChild(titleElm);
-  cardContainerElm.appendChild(coverElm);
+  cardContainerElm.appendChild(coverWrapper);
   cardContainerElm.appendChild(authorElm);
   cardContainerElm.appendChild(publishDateElm);
 }

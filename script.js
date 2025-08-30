@@ -11,6 +11,7 @@ const bookFormCancelBtn =
   document.querySelector('.add-book-form .cancelBtn');
 const updateCoverCancelBtn =
   document.querySelector('.update-cover-form .cancelBtn');
+const updateCoverBtn = document.querySelector('.updateCoverBtn');
 
 // Bookshelf elements
 const shelf = document.querySelector('.shelf')
@@ -27,6 +28,9 @@ function Book(title, author, publishDate, cover) {
   this.isRead = false;
   this.updateReadFlag = function () {
     this.isRead = !this.isRead;
+  }
+  this.updateCover = function (coverLink) {
+    this.cover = coverLink;
   }
 
   if (cover) { this.cover = cover }
@@ -106,9 +110,10 @@ function buildBookCard(book) {
   // Apply button functionality
   deleteBtn.addEventListener('click', () => deleteBook(cardElm));
   toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
-  coverWrapper.addEventListener('click', toggleCoverForm);
+  coverWrapper.addEventListener('click', () => toggleCoverForm(book));
 }
 
+// Book handlers
 function renderBooks() {
   shelf.firstElementChild.textContent = '';
   for (book of bookShelf) {
@@ -121,6 +126,15 @@ function deleteBook(bookCard) {
   const newBookShelf = bookShelf.filter(book => markedId !== book.id);
 
   bookShelf = [...newBookShelf];
+  renderBooks();
+}
+
+function updateCover(selected) {
+  const link = document.querySelector('#cover-form input').value;
+  selected.updateCover(link);
+  const index = bookShelf.indexOf(book => book.id === selected.id);
+  bookShelf[index] = selected;
+  toggleCoverForm();
   renderBooks();
 }
 
@@ -150,7 +164,6 @@ function submitBook(event) {
     "readFlag": readFlag,
   }
 
-
   storeBook(book);
   renderBooks();
 }
@@ -171,12 +184,18 @@ function toggleBookForm() {
   body.classList.toggle('hide-overflow');
 }
 
-function toggleCoverForm() {
+function toggleCoverForm(book) {
   updateCoverForm.classList.toggle('show-form');
   body.classList.toggle('hide-overflow');
+  selectedCover = book;
 }
 
+// Form button listeners
 updateCoverCancelBtn.addEventListener('click', toggleCoverForm);
+updateCoverBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+  updateCover(selectedCover);
+});
 showFormBtn.addEventListener('click', toggleBookForm);
 bookFormCancelBtn.addEventListener('click', toggleBookForm);
 addBookBtn.addEventListener('click', (event) => {

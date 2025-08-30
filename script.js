@@ -1,11 +1,17 @@
 let bookShelf = [];
 const body = document.querySelector('body');
+let selectedCover;
 
 // Form elements
 const showFormBtn = document.querySelector('.showFormBtn');
-const formContainer = document.querySelector('.form-container');
+const addBookForm = document.querySelector('.add-book-form');
+const updateCoverForm = document.querySelector('.update-cover-form');
 const addBookBtn = document.querySelector('.addBookBtn');
-const cancelBtn = document.querySelector('.cancelBtn');
+const bookFormCancelBtn =
+  document.querySelector('.add-book-form .cancelBtn');
+const updateCoverCancelBtn =
+  document.querySelector('.update-cover-form .cancelBtn');
+const updateCoverBtn = document.querySelector('.updateCoverBtn');
 
 // Bookshelf elements
 const shelf = document.querySelector('.shelf')
@@ -22,6 +28,9 @@ function Book(title, author, publishDate, cover) {
   this.isRead = false;
   this.updateReadFlag = function () {
     this.isRead = !this.isRead;
+  }
+  this.updateCover = function (coverLink) {
+    this.cover = coverLink;
   }
 
   if (cover) { this.cover = cover }
@@ -46,9 +55,11 @@ function buildBookCard(book) {
   const deleteBtn = document.createElement('button');
   const checkboxWrapper = document.createElement('div');
   const readLabel = document.createElement('label');
-  const toggleReadBox= document.createElement('input');
+  const toggleReadBox = document.createElement('input');
   const titleElm = document.createElement('h2');
+  const coverWrapper = document.createElement('div');
   const coverElm = document.createElement('img');
+  const coverUpdateIcon = document.createElement('img');
   const authorElm = document.createElement('p');
   const publishDateElm = document.createElement('p');
 
@@ -64,35 +75,45 @@ function buildBookCard(book) {
   checkboxWrapper.classList.toggle('wrapper');
   toggleReadBox.classList.toggle('readBtn');
   titleElm.classList.toggle('title');
+  coverWrapper.classList.toggle('wrapper');
   coverElm.classList.toggle('cover');
+  coverUpdateIcon.classList.toggle('coverUpdateIcon');
   if (book.isRead) { cardElm.classList.toggle('read') }
 
   cardElm.dataset.id = book.id;
 
+  // Populate element content
   deleteBtn.textContent = 'Delete';
   readLabel.textContent = 'Read'
   titleElm.textContent = book.title;
   authorElm.textContent = book.author;
   publishDateElm.textContent = book.publishDate;
   coverElm.src = book.cover;
-
-  deleteBtn.addEventListener('click', () => deleteBook(cardElm));
-  toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
+  coverUpdateIcon.src = './img/icons/edit-img.svg';
 
   // Render DOM elements
   checkboxWrapper.appendChild(readLabel);
   checkboxWrapper.appendChild(toggleReadBox);
+
+  coverWrapper.appendChild(coverElm);
+  coverWrapper.appendChild(coverUpdateIcon);
 
   shelfContainerElm.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(deleteBtn);
   cardContainerElm.appendChild(checkboxWrapper);
   cardContainerElm.appendChild(titleElm);
-  cardContainerElm.appendChild(coverElm);
+  cardContainerElm.appendChild(coverWrapper);
   cardContainerElm.appendChild(authorElm);
   cardContainerElm.appendChild(publishDateElm);
+
+  // Apply button functionality
+  deleteBtn.addEventListener('click', () => deleteBook(cardElm));
+  toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
+  coverWrapper.addEventListener('click', () => toggleCoverForm(book));
 }
 
+// Book handlers
 function renderBooks() {
   shelf.firstElementChild.textContent = '';
   for (book of bookShelf) {
@@ -108,14 +129,13 @@ function deleteBook(bookCard) {
   renderBooks();
 }
 
-function toggleRead(bookCard) {
-  bookCard.classList.toggle('read');
-  const markedId = bookCard.dataset.id;
-  const grabbedBook = bookShelf.filter(book => markedId === book.id)[0];
-
-  grabbedBook.updateReadFlag();
-  const index = bookShelf.findIndex(book => book.id === markedId);
-  bookShelf[index] = grabbedBook;
+function updateCover(selected) {
+  const link = document.querySelector('#cover-form input').value;
+  selected.updateCover(link);
+  const index = bookShelf.indexOf(book => book.id === selected.id);
+  bookShelf[index] = selected;
+  toggleCoverForm();
+  renderBooks();
 }
 
 function submitBook(event) {
@@ -148,13 +168,36 @@ function submitBook(event) {
   renderBooks();
 }
 
-function toggleForm() {
-  formContainer.classList.toggle('show-form');
+// Toggle Functions
+function toggleRead(bookCard) {
+  bookCard.classList.toggle('read');
+  const markedId = bookCard.dataset.id;
+  const grabbedBook = bookShelf.filter(book => markedId === book.id)[0];
+
+  grabbedBook.updateReadFlag();
+  const index = bookShelf.findIndex(book => book.id === markedId);
+  bookShelf[index] = grabbedBook;
+}
+
+function toggleBookForm() {
+  addBookForm.classList.toggle('show-form');
   body.classList.toggle('hide-overflow');
 }
 
-showFormBtn.addEventListener('click', toggleForm);
-cancelBtn.addEventListener('click', toggleForm);
+function toggleCoverForm(book) {
+  updateCoverForm.classList.toggle('show-form');
+  body.classList.toggle('hide-overflow');
+  selectedCover = book;
+}
+
+// Form button listeners
+updateCoverCancelBtn.addEventListener('click', toggleCoverForm);
+updateCoverBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+  updateCover(selectedCover);
+});
+showFormBtn.addEventListener('click', toggleBookForm);
+bookFormCancelBtn.addEventListener('click', toggleBookForm);
 addBookBtn.addEventListener('click', (event) => {
   const requiredFields = document.querySelectorAll('input[required]');
   let requiredFlag = true;
@@ -166,7 +209,7 @@ addBookBtn.addEventListener('click', (event) => {
 
   if (requiredFlag) {
     submitBook(event);
-    toggleForm();
+    toggleBookForm();
   }
 });
 

@@ -6,6 +6,10 @@
   url('fonts/roboto-variablefont.woff2') format('woff2');
 }
 
+/* 
+  General
+  ========
+*/
 body {
   position: relative;
   display: flex;
@@ -39,6 +43,10 @@ header button {
   height: min-content;
 }
 
+/* 
+  Bookshelf
+  ==========
+*/
 body .shelf {
   width: min(100%, 1000px);
 }
@@ -53,18 +61,45 @@ body .shelf {
 }
 
 .card {
+  box-shadow: 0px 0px 5px gray;
+  background-color: lightblue;
   border: 1px solid black;
+  border-radius: 20px;
 }
 
-.card .container {
+.card > .container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .container .cover {
   height: 30vh;
   box-shadow: 0px 0px 10px gray;
+}
+
+.container .wrapper:last-of-type {
+  position: relative;
+}
+
+.container .coverUpdateIcon {
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.container .wrapper:last-of-type:hover {
+  cursor: pointer;
+}
+
+.container .wrapper:last-of-type:hover .coverUpdateIcon {
+  display: block;
+  background: #00000065;
+  height: calc(100% + 1px);
 }
 
 .card h2 {
@@ -75,6 +110,21 @@ body .shelf {
   margin: 10px;
 }
 
+.deleteBtn {
+  position: absolute;
+  left: 10px;
+  padding: 5px;
+
+  background-color: red;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+/* 
+  Form
+  =====
+*/
 .form-container {
   position: absolute;
   left: 0;
@@ -122,33 +172,11 @@ form .required::before {
   content: '*';
 }
 
+
 /* 
-  Book shelf 
-  ===========
+  Javascript classes 
+  ===================
 */
-.card {
-  border-radius: 20px;
-  box-shadow: 0px 0px 5px gray;
-  background-color: lightblue;
-}
-
-.card > .container {
-  position: relative;
-}
-
-.deleteBtn {
-  position: absolute;
-  left: 10px;
-  padding: 5px;
-
-  background-color: red;
-  border: none;
-  border-radius: 5px;
-  color: white;
-}
-
-
-/* Javascript classes */
 .show-form {
   display: flex;
 }

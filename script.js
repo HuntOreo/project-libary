@@ -68,11 +68,12 @@ function buildBookCard(book) {
   titleElm.classList.toggle('title');
   coverWrapper.classList.toggle('wrapper');
   coverElm.classList.toggle('cover');
-  coverUpdateIcon.classList.toggle('cover-update-icon');
+  coverUpdateIcon.classList.toggle('coverUpdateIcon');
   if (book.isRead) { cardElm.classList.toggle('read') }
 
   cardElm.dataset.id = book.id;
 
+  // Populate element content
   deleteBtn.textContent = 'Delete';
   readLabel.textContent = 'Read'
   titleElm.textContent = book.title;
@@ -80,9 +81,6 @@ function buildBookCard(book) {
   publishDateElm.textContent = book.publishDate;
   coverElm.src = book.cover;
   coverUpdateIcon.src = './img/icons/edit-img.svg';
-
-  deleteBtn.addEventListener('click', () => deleteBook(cardElm));
-  toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
 
   // Render DOM elements
   checkboxWrapper.appendChild(readLabel);
@@ -99,6 +97,10 @@ function buildBookCard(book) {
   cardContainerElm.appendChild(coverWrapper);
   cardContainerElm.appendChild(authorElm);
   cardContainerElm.appendChild(publishDateElm);
+
+  // Apply button functionality
+  deleteBtn.addEventListener('click', () => deleteBook(cardElm));
+  toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
 }
 
 function renderBooks() {

@@ -59,6 +59,7 @@ function buildBookCard(book) {
 
 
   toggleReadBox.type = "checkbox";
+  toggleReadBox.checked = book.isRead;
   toggleReadBox.id = `readCheckbox-${book.id}`;
   readLabel.htmlFor = `readCheckbox-${book.id}`;
 

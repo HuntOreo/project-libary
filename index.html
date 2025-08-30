@@ -18,7 +18,7 @@
 
     <div class="shelf"></div>
 
-    <div class="form-container">
+    <div class="form-container add-book-form">
       <form action="" id="book-form">
         <div class="wrapper">
           <label for="title" class="required">Title</label>
@@ -42,6 +42,17 @@
         </div>
         <p>* Required</p>
         <button class="addBookBtn" type="submit">Add</button>
+        <button class="cancelBtn" type="button">Cancel</button>
+      </form>
+    </div>
+
+    <div class="form-container update-cover-form">
+      <form id="cover-form">
+        <div class="wrapper">
+          <label for="cover-link">Cover Link</label>
+          <input type="text" name="cover-link" id="cover-link">
+        </div>
+        <button class="updateCoverBtn">Update</button>
         <button class="cancelBtn" type="button">Cancel</button>
       </form>
     </div>

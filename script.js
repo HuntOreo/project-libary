@@ -1,11 +1,16 @@
 let bookShelf = [];
 const body = document.querySelector('body');
+let selectedCover;
 
 // Form elements
 const showFormBtn = document.querySelector('.showFormBtn');
-const formContainer = document.querySelector('.form-container');
+const addBookForm = document.querySelector('.add-book-form');
+const updateCoverForm = document.querySelector('.update-cover-form');
 const addBookBtn = document.querySelector('.addBookBtn');
-const cancelBtn = document.querySelector('.cancelBtn');
+const bookFormCancelBtn =
+  document.querySelector('.add-book-form .cancelBtn');
+const updateCoverCancelBtn =
+  document.querySelector('.update-cover-form .cancelBtn');
 
 // Bookshelf elements
 const shelf = document.querySelector('.shelf')
@@ -101,6 +106,7 @@ function buildBookCard(book) {
   // Apply button functionality
   deleteBtn.addEventListener('click', () => deleteBook(cardElm));
   toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
+  coverWrapper.addEventListener('click', toggleCoverForm);
 }
 
 function renderBooks() {
@@ -116,16 +122,6 @@ function deleteBook(bookCard) {
 
   bookShelf = [...newBookShelf];
   renderBooks();
-}
-
-function toggleRead(bookCard) {
-  bookCard.classList.toggle('read');
-  const markedId = bookCard.dataset.id;
-  const grabbedBook = bookShelf.filter(book => markedId === book.id)[0];
-
-  grabbedBook.updateReadFlag();
-  const index = bookShelf.findIndex(book => book.id === markedId);
-  bookShelf[index] = grabbedBook;
 }
 
 function submitBook(event) {
@@ -154,17 +150,35 @@ function submitBook(event) {
     "readFlag": readFlag,
   }
 
+
   storeBook(book);
   renderBooks();
 }
 
-function toggleForm() {
-  formContainer.classList.toggle('show-form');
+// Toggle Functions
+function toggleRead(bookCard) {
+  bookCard.classList.toggle('read');
+  const markedId = bookCard.dataset.id;
+  const grabbedBook = bookShelf.filter(book => markedId === book.id)[0];
+
+  grabbedBook.updateReadFlag();
+  const index = bookShelf.findIndex(book => book.id === markedId);
+  bookShelf[index] = grabbedBook;
+}
+
+function toggleBookForm() {
+  addBookForm.classList.toggle('show-form');
   body.classList.toggle('hide-overflow');
 }
 
-showFormBtn.addEventListener('click', toggleForm);
-cancelBtn.addEventListener('click', toggleForm);
+function toggleCoverForm() {
+  updateCoverForm.classList.toggle('show-form');
+  body.classList.toggle('hide-overflow');
+}
+
+updateCoverCancelBtn.addEventListener('click', toggleCoverForm);
+showFormBtn.addEventListener('click', toggleBookForm);
+bookFormCancelBtn.addEventListener('click', toggleBookForm);
 addBookBtn.addEventListener('click', (event) => {
   const requiredFields = document.querySelectorAll('input[required]');
   let requiredFlag = true;
@@ -176,7 +190,7 @@ addBookBtn.addEventListener('click', (event) => {
 
   if (requiredFlag) {
     submitBook(event);
-    toggleForm();
+    toggleBookForm();
   }
 });
 

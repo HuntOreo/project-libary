@@ -49,17 +49,25 @@ function buildBookCard(book) {
   const cardElm = document.createElement('div');
   const cardContainerElm = document.createElement('div');
   const deleteBtn = document.createElement('button');
-  const toggleReadBtn = document.createElement('button');
+  const checkboxWrapper = document.createElement('div');
+  const readLabel = document.createElement('label');
+  const toggleReadBox= document.createElement('input');
   const titleElm = document.createElement('h2');
   const coverElm = document.createElement('img');
   const authorElm = document.createElement('p');
   const publishDateElm = document.createElement('p');
 
+
+  toggleReadBox.type = "checkbox";
+  toggleReadBox.id = "readCheckbox";
+  readLabel.htmlFor = "readCheckbox";
+
   // Assign CSS classes
   cardElm.classList.toggle('card');
   cardContainerElm.classList.toggle('container');
   deleteBtn.classList.toggle('deleteBtn');
-  toggleReadBtn.classList.toggle('readBtn');
+  checkboxWrapper.classList.toggle('wrapper');
+  toggleReadBox.classList.toggle('readBtn');
   titleElm.classList.toggle('title');
   coverElm.classList.toggle('cover');
 
@@ -70,20 +78,24 @@ function buildBookCard(book) {
   cardElm.dataset.id = book.id;
 
   deleteBtn.innerText = 'Delete';
-  toggleReadBtn.innerText = 'Mark as Read';
+  readLabel.innerText = 'Read'
   titleElm.innerText = book.title;
   authorElm.innerText = book.author;
   publishDateElm.innerText = book.publishDate;
   coverElm.src = book.cover;
 
   deleteBtn.addEventListener('click', () => deleteBook(cardElm));
-  toggleReadBtn.addEventListener('click', () => toggleRead(cardElm));
+  toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
 
   // Render DOM elements
+  checkboxWrapper.appendChild(readLabel);
+  checkboxWrapper.appendChild(toggleReadBox);
+
   shelfContainerElm.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(deleteBtn);
-  cardContainerElm.appendChild(toggleReadBtn);
+  cardContainerElm.appendChild(checkboxWrapper);
+  cardContainerElm.appendChild(toggleReadBox);
   cardContainerElm.appendChild(titleElm);
   cardContainerElm.appendChild(coverElm);
   cardContainerElm.appendChild(authorElm);

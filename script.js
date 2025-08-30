@@ -59,8 +59,8 @@ function buildBookCard(book) {
 
 
   toggleReadBox.type = "checkbox";
-  toggleReadBox.id = "readCheckbox";
-  readLabel.htmlFor = "readCheckbox";
+  toggleReadBox.id = `readCheckbox-${book.id}`;
+  readLabel.htmlFor = `readCheckbox-${book.id}`;
 
   // Assign CSS classes
   cardElm.classList.toggle('card');
@@ -77,11 +77,11 @@ function buildBookCard(book) {
 
   cardElm.dataset.id = book.id;
 
-  deleteBtn.innerText = 'Delete';
-  readLabel.innerText = 'Read'
-  titleElm.innerText = book.title;
-  authorElm.innerText = book.author;
-  publishDateElm.innerText = book.publishDate;
+  deleteBtn.textContent = 'Delete';
+  readLabel.textContent = 'Read'
+  titleElm.textContent = book.title;
+  authorElm.textContent = book.author;
+  publishDateElm.textContent = book.publishDate;
   coverElm.src = book.cover;
 
   deleteBtn.addEventListener('click', () => deleteBook(cardElm));
@@ -95,7 +95,6 @@ function buildBookCard(book) {
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(deleteBtn);
   cardContainerElm.appendChild(checkboxWrapper);
-  cardContainerElm.appendChild(toggleReadBox);
   cardContainerElm.appendChild(titleElm);
   cardContainerElm.appendChild(coverElm);
   cardContainerElm.appendChild(authorElm);
@@ -122,6 +121,7 @@ function deleteBook(bookCard) {
 }
 
 function toggleRead(bookCard) {
+  bookCard.classList.toggle('read');
   const markedId = bookCard.dataset.id;
   const grabbedBook = bookShelf.filter(book => {
     if (markedId === book.id) {
@@ -130,17 +130,8 @@ function toggleRead(bookCard) {
   })[0];
 
   grabbedBook.updateReadFlag();
-
-  const newBookShelf = bookShelf.map(book => {
-    if (book.id === markedId) {
-      return grabbedBook;
-    } else {
-      return book;
-    }
-  })
-
-  bookShelf = [...newBookShelf];
-  renderBooks();
+  const index = bookShelf.findIndex(book => book.id === markedId);
+  bookShelf[index] = grabbedBook;
 }
 
 function submitBook(event) {

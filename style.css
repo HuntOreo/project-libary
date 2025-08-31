@@ -196,6 +196,8 @@ form {
 
   background-color: #fff;
   border-radius: 10px;
+  box-shadow: inset 0px 0px 5px gray;
+  font-size: 1em;
 }
 
 form p {
@@ -205,19 +207,55 @@ form p {
 
 form .wrapper {
   display: flex;
+  gap: 10px;
+  text-shadow: 0px 0px 2px gray;
 }
 
 form label {
   position: relative;
   min-width: 100px;
+  display: flex;
+  align-items: center;
+
+  font-weight: 500;
 }
 
 form .required::before {
+  content: '*';
   position: absolute;
   left: -10px;
-  content: '*';
 }
 
+form input[type="text"],
+form input[type="number"] {
+  padding: 4px;
+
+  background-color: var(--card-primary-gray);
+  border: none;
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 3px gray;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.formBtn {
+  width: 100px;
+  padding: 5px;
+
+  background-color: lightgreen;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px gray;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background-color: red;
+  color: white;
+}
 
 /* 
   Javascript classes 

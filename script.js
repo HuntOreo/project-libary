@@ -1,6 +1,8 @@
-let bookShelf = [];
 const body = document.querySelector('body');
-let selectedCover;
+
+// Global
+var bookShelf = [];
+var selectedCover;
 
 // Form elements
 const showFormBtn = document.querySelector('.showFormBtn');

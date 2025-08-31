@@ -53,7 +53,7 @@ function buildBookCard(book) {
   const cardElm = document.createElement('div');
   const cardContainerElm = document.createElement('div');
   const deleteBtn = document.createElement('button');
-  const checkboxWrapper = document.createElement('div');
+  const buttonsWrapper = document.createElement('div');
   const readLabel = document.createElement('label');
   const toggleReadBox = document.createElement('input');
   const titleElm = document.createElement('h2');
@@ -72,7 +72,7 @@ function buildBookCard(book) {
   cardElm.classList.toggle('card');
   cardContainerElm.classList.toggle('container');
   deleteBtn.classList.toggle('deleteBtn');
-  checkboxWrapper.classList.toggle('wrapper');
+  buttonsWrapper.classList.toggle('wrapper');
   toggleReadBox.classList.toggle('readBtn');
   titleElm.classList.toggle('title');
   coverWrapper.classList.toggle('wrapper');
@@ -92,16 +92,15 @@ function buildBookCard(book) {
   coverUpdateIcon.src = './img/icons/edit-img.svg';
 
   // Render DOM elements
-  checkboxWrapper.appendChild(readLabel);
-  checkboxWrapper.appendChild(toggleReadBox);
+  buttonsWrapper.appendChild(deleteBtn);
+  buttonsWrapper.appendChild(readLabel);
+  buttonsWrapper.appendChild(toggleReadBox);
 
   coverWrapper.appendChild(coverElm);
   coverWrapper.appendChild(coverUpdateIcon);
-
   shelfContainerElm.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
-  cardContainerElm.appendChild(deleteBtn);
-  cardContainerElm.appendChild(checkboxWrapper);
+  cardContainerElm.appendChild(buttonsWrapper);
   cardContainerElm.appendChild(titleElm);
   cardContainerElm.appendChild(coverWrapper);
   cardContainerElm.appendChild(authorElm);

@@ -148,19 +148,18 @@ function submitBook(event) {
     bookInfo[entry[0]] = entry[1];
   }
 
-  const title = bookInfo["title"];
-  const author = bookInfo["author"];
+  const { title, author } = bookInfo;
   const publishDate = bookInfo["publish-date"];
-  let coverLink = bookInfo["cover-link"];
+  const coverLink = bookInfo["cover-link"];
   let readFlag;
   bookInfo.readFlag ? readFlag = true : readFlag = false;
 
   const book = {
-    "title": title,
-    "author": author,
-    "publishDate": publishDate,
-    "coverLink": coverLink,
-    "readFlag": readFlag,
+    title,
+    author,
+    publishDate,
+    coverLink,
+    readFlag,
   }
 
   storeBook(book);

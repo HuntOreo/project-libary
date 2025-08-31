@@ -126,7 +126,7 @@ body .shelf {
   =====
 */
 .form-container {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -135,7 +135,7 @@ body .shelf {
   display: none;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
 
   background-color: #5c5c5c9c;
 }

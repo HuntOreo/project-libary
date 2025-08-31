@@ -223,25 +223,8 @@ storeBook({
   "title": 'The Hunger Games',
   "author": 'Suzanne Collins',
   "publishDate": 2008,
-  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0439023521.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-});
-storeBook({
-  "title": 'The Catcher in the Rye',
-  "author": 'J. D. Salinger',
-  "publishDate": 1951,
-  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0316769177.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-});
-storeBook({
-  "title": 'Lolita',
-  "author": 'Vladimir Nabokov',
-  "publishDate": 1955,
-  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0679723161.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-});
-storeBook({
-  "title": 'The Lightning Thief',
-  "author": 'Rick Riordan',
-  "publishDate": 2005,
-  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0786838655.01._SX450_SY635_SCLZZZZZZZ_.jpg'
+  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0439023521.01._SX450_SY635_SCLZZZZZZZ_.jpg',
+  "readFlag": true,
 });
 
 renderBooks();

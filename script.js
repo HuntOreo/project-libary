@@ -21,17 +21,17 @@
 //   renderBooks();
 // }
 
-function toggleRead(bookCard) {
-  bookCard.classList.toggle('read');
-  const markedId = bookCard.dataset.id;
-  const grabbedBook = bookShelf.filter(book => markedId === book.id)[0];
+// function toggleRead(bookCard) {
+//   bookCard.classList.toggle('read');
+//   const markedId = bookCard.dataset.id;
+//   const grabbedBook = bookShelf.filter(book => markedId === book.id)[0];
 
-  grabbedBook.updateReadFlag();
-  const index = bookShelf.findIndex(book => book.id === markedId);
-  bookShelf[index] = grabbedBook;
-}
+//   grabbedBook.updateReadFlag();
+//   const index = bookShelf.findIndex(book => book.id === markedId);
+//   bookShelf[index] = grabbedBook;
+// }
 
-toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
+// toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
 
 // renderBooks();
 

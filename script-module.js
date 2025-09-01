@@ -147,6 +147,20 @@ const Shelf = function (selector) {
     return this.books;
   }
 
+  this.getBook = function (selectedID) {
+    return this.books.filter((book, index) => {
+      if (book.id !== selectedID) return { index, book }
+    });
+  }
+
+  this.updateBook = function (newBook, selectedID) {
+    const index = this.getBook(selectedID).index;
+    let newBooks = [...this.books];
+    newBooks[index] = newBook;
+    this.books = newBooks;
+    this.render();
+  }
+
   this.init = function (form) {
     this.form = form
     this.container = document.createElement('div');
@@ -162,6 +176,10 @@ const Shelf = function (selector) {
       cover,
       readFlag
     });
+
+    if (readFlag) {
+      book.updateReadFlag();
+    };
 
     this.books.push(book);
     this.render();
@@ -243,6 +261,10 @@ const Shelf = function (selector) {
     deleteBtn.addEventListener('click', () => {
       shelf.removeBook(cardElm, shelf)
     });
+    toggleReadBox.addEventListener('click', () => {
+      book.updateReadFlag();
+      shelf.updateBook(book);
+    })
   }
 }
 

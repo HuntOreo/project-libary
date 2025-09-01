@@ -31,6 +31,8 @@ function toggleRead(bookCard) {
   bookShelf[index] = grabbedBook;
 }
 
+toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
+
 // renderBooks();
 
 // Form elements
@@ -135,8 +137,8 @@ function toggleRead(bookCard) {
 //   cardContainerElm.appendChild(publishDateElm);
 
 //   // Apply button functionality
-deleteBtn.addEventListener('click', () => deleteBook(cardElm));
-//   toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
+// deleteBtn.addEventListener('click', () => deleteBook(cardElm));
+
 //   coverWrapper.addEventListener('click', () => toggleCoverForm(book));
 // }
 

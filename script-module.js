@@ -11,31 +11,31 @@ const Form = function ({
   this.cancelBtn = document.querySelector(cancelBtn);
   this.displayFormBtn = document.querySelector(displayFormBtn);
 
-  this.init = function () {
+  this.init = function (shelf) {
     this.displayFormBtn.addEventListener('click', () => {
-      toggleForm(this.formContainer);
+      toggle(this.formContainer);
     });
     this.cancelBtn.addEventListener('click', () => {
-      cancelForm(this.formContainer, toggleForm);
+      cancel(this.formContainer, toggle);
     });
     this.submitBtn.addEventListener('click', (event) => {
       if (requiredCheck(this.form)) {
         event.preventDefault();
-        submitForm(this.formContainer, this.form, toggleForm);
+        this.submit(shelf);
       }
     });
   }
 
-  const toggleForm = function (form) {
+  const toggle = function (form) {
     form.classList.toggle('show-form');
     form.classList.toggle('hide-overflow');
   }
 
-  const cancelForm = function (form, toggleForm) {
+  const cancel = function (form, toggleForm) {
     const inputs = form.querySelectorAll('input');
     inputs.forEach(element => element.value = '');
 
-    toggleForm(form);
+    toggle(form);
   }
 
   const requiredCheck = function (form) {
@@ -51,8 +51,8 @@ const Form = function ({
     return requiredFlag;
   }
 
-  const submitForm = function (formContainer, form, toggleForm) {
-    const formData = new FormData(form);
+  this.submit = function (shelf) {
+    const formData = new FormData(this.form);
     let bookInfo = {};
 
     for (entry of formData) {
@@ -73,8 +73,8 @@ const Form = function ({
       readFlag,
     };
 
-    storeBook(book);
-    toggleForm(formContainer);
+    shelf.addBook(book)
+    toggle(this.formContainer);
   }
 }
 
@@ -134,10 +134,6 @@ Object.create(Form.prototype);
 Object.setPrototypeOf(BookCoverForm.prototype, Form.prototype);
 
 const Shelf = function (selector) {
-  // Add card for handling and setting a bookshelf.
-  // will include methods for 
-  // - removing books, 
-
   this.selector = selector;
   this.books = [];
   const shelfElement = document.querySelector(selector);
@@ -151,14 +147,11 @@ const Shelf = function (selector) {
     return this.books;
   }
 
-  this.init = function () {
+  this.init = function (form) {
+    this.form = form
     this.container = document.createElement('div');
     this.container.classList.toggle('container');
     shelfElement.appendChild(this.container);
-  }
-
-  this.attachForm = function (form) {
-    this.form = form;
   }
 
   this.addBook = function ({ title, author, publishDate, cover, readFlag }) {
@@ -301,11 +294,10 @@ const booksArr = [
   }
 ]
 
-shelf.init();
 coverForm.init();
-addBookForm.init();
+shelf.init(coverForm);
+addBookForm.init(shelf);
 
-shelf.attachForm(coverForm);
 shelf.set(booksArr);
 shelf.render();
 shelf.addBook(

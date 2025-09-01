@@ -73,7 +73,7 @@ const Form = function ({
       readFlag,
     };
 
-    shelf.addBook(book)
+    shelf.addBook(book).render();
     toggle(this.container);
   }
 }
@@ -161,7 +161,7 @@ const Shelf = function (selector) {
     let newBooks = [...this.books];
     newBooks[index] = newBook;
     this.books = newBooks;
-    this.render();
+    return this;
   }
 
   this.addBook = function ({ title, author, publishDate, cover, readFlag }) {
@@ -178,7 +178,7 @@ const Shelf = function (selector) {
     };
 
     this.books.push(book);
-    this.render();
+    return this;
   }
 
 
@@ -186,7 +186,7 @@ const Shelf = function (selector) {
     const selectedID = card.dataset.id;
     const newShelf = shelf.books.filter(book => book.id !== selectedID);
     shelf.set(newShelf);
-    shelf.render();
+    return shelf;
   }
 
   this.init = function (form) {
@@ -263,11 +263,11 @@ const Shelf = function (selector) {
 
     shelf.form.setEvent(coverWrapper, book, shelf);
     deleteBtn.addEventListener('click', () => {
-      shelf.removeBook(cardElm, shelf)
+      shelf.removeBook(cardElm, shelf).render();
     });
     toggleReadBox.addEventListener('click', () => {
       book.updateReadFlag();
-      shelf.updateBook(book);
+      shelf.updateBook(book).render();
     })
   }
 }
@@ -316,4 +316,4 @@ shelf.addBook(
     publishDate: 1897,
     cover: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1400602609i/28187.jpg'
   }
-);
+).render();

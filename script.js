@@ -128,43 +128,43 @@ function deleteBook(bookCard) {
   renderBooks();
 }
 
-function updateCover(selected) {
-  const link = document.querySelector('#cover-form input').value;
-  selected.updateCover(link);
-  const index = bookShelf.indexOf(book => book.id === selected.id);
-  bookShelf[index] = selected;
-  toggleCoverForm();
-  renderBooks();
-}
+// function updateCover(selected) {
+//   const link = document.querySelector('#cover-form input').value;
+//   selected.updateCover(link);
+//   const index = bookShelf.indexOf(book => book.id === selected.id);
+//   bookShelf[index] = selected;
+//   toggleCoverForm();
+//   renderBooks();
+// }
 
-function submitBook(event) {
-  event.preventDefault();
+// function submitBook(event) {
+//   event.preventDefault();
 
-  const bookForm = document.querySelector('#book-form');
-  const formData = new FormData(bookForm);
-  let bookInfo = {};
+//   const bookForm = document.querySelector('#book-form');
+//   const formData = new FormData(bookForm);
+//   let bookInfo = {};
 
-  for (entry of formData) {
-    bookInfo[entry[0]] = entry[1];
-  }
+//   for (entry of formData) {
+//     bookInfo[entry[0]] = entry[1];
+//   }
 
-  const { title, author } = bookInfo;
-  const publishDate = bookInfo["publish-date"];
-  const coverLink = bookInfo["cover-link"];
-  let readFlag;
-  bookInfo.readFlag ? readFlag = true : readFlag = false;
+//   const { title, author } = bookInfo;
+//   const publishDate = bookInfo["publish-date"];
+//   const coverLink = bookInfo["cover-link"];
+//   let readFlag;
+//   bookInfo.readFlag ? readFlag = true : readFlag = false;
 
-  const book = {
-    title,
-    author,
-    publishDate,
-    coverLink,
-    readFlag,
-  }
+//   const book = {
+//     title,
+//     author,
+//     publishDate,
+//     coverLink,
+//     readFlag,
+//   }
 
-  storeBook(book);
-  renderBooks();
-}
+//   storeBook(book);
+//   renderBooks();
+// }
 
 // Toggle Functions
 function toggleRead(bookCard) {
@@ -182,11 +182,11 @@ function toggleRead(bookCard) {
 //   body.classList.toggle('hide-overflow');
 // }
 
-function toggleCoverForm(book) {
-  updateCoverForm.classList.toggle('show-form');
-  body.classList.toggle('hide-overflow');
-  selectedCover = book;
-}
+// function toggleCoverForm(book) {
+//   updateCoverForm.classList.toggle('show-form');
+//   body.classList.toggle('hide-overflow');
+//   selectedCover = book;
+// }
 
 // Form button listeners
 updateCoverCancelBtn.addEventListener('click', toggleCoverForm);

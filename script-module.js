@@ -1,3 +1,11 @@
+let bookShelf = [];
+
+// Bookshelf elements
+const shelf = document.querySelector('.shelf')
+const shelfContainerElm = document.createElement('div');
+shelfContainerElm.classList.toggle('container');
+shelf.appendChild(shelfContainerElm);
+
 const Form = function ({
   formContainer,
   form,
@@ -73,10 +81,10 @@ const BookCoverForm = function ({
   Form.call(this, { formContainer, form, submitBtn, cancelBtn });
   this.input = document.querySelector('#cover-form input');
 
-  this.setEvent = function (displayBtn, link) {
+  this.setEvent = function (displayBtn, book) {
     displayBtn.addEventListener('click', () => {
-      this.link = link;
-      this.input.value = this.link;
+      this.book = book;
+      this.input.value = this.book.cover;
       toggleForm(this.formContainer);
     });
   }
@@ -85,6 +93,11 @@ const BookCoverForm = function ({
     this.cancelBtn.addEventListener('click', () => {
       cancelForm(this.formContainer, this.input)
     });
+
+    this.submitBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      submitForm(this.book, this.input);
+    });
   }
 
   const toggleForm = function (form) {
@@ -92,15 +105,34 @@ const BookCoverForm = function ({
     form.classList.toggle('hide-overflow');
   }
 
-  function cancelForm(form, input) {
+  const cancelForm = function (form, input) {
     input.value = "";
     toggleForm(form);
   }
 
+  const submitForm = function (book, input) {
+    let newBook = { ...book };
+    newBook.updateCover(input.value);
+    const newShelf = bookShelf.map(child => {
+      if (child.id === newBook.id) {
+        return newBook;
+      }
+
+      return child;
+    })
+    bookShelf = [...newShelf];
+  }
 }
 
 Object.create(Form.prototype);
 Object.setPrototypeOf(BookCoverForm.prototype, Form.prototype);
+
+const Shelf = function () {
+  // Add card for handling and setting a bookshelf.
+  // will include methods for 
+  // - Adding books to the shelf, removing books, 
+  // - Rendering bookshelf
+}
 
 const Book = function (title, author, publishDate, cover) {
   this.title = title;
@@ -118,47 +150,6 @@ const Book = function (title, author, publishDate, cover) {
 
   if (cover) { this.cover = cover }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-let bookShelf = [];
-
-// Bookshelf elements
-const shelf = document.querySelector('.shelf')
-const shelfContainerElm = document.createElement('div');
-shelfContainerElm.classList.toggle('container');
-shelf.appendChild(shelfContainerElm);
 
 function buildBookCard(book) {
 
@@ -220,7 +211,7 @@ function buildBookCard(book) {
   cardContainerElm.appendChild(publishDateElm);
 
 
-  coverForm.setEvent(coverWrapper, book.cover);
+  coverForm.setEvent(coverWrapper, book);
 
 }
 

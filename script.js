@@ -1,5 +1,5 @@
-let bookShelf = [];
 const body = document.querySelector('body');
+let bookShelf = [];
 let selectedCover;
 
 // Form elements

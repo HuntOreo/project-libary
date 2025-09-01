@@ -112,9 +112,9 @@ const BookCoverForm = function ({
     container.classList.toggle('hide-overflow');
   }
 
-  const cancel = function (form, input) {
+  const cancel = function (container, input) {
     input.value = "";
-    toggleForm(form);
+    toggle(container);
   }
 
   this.submit = function (book, input, container) {
@@ -304,27 +304,10 @@ const coverForm = new BookCoverForm({
 });
 const shelf = new Shelf('.shelf');
 
-const booksArr = [
-  {
-    "title": 'The Hunger Games',
-    "author": 'Suzanne Collins',
-    "publishDate": 2008,
-    "cover": 'https://images-na.ssl-images-amazon.com/images/P/0439023521.01._SX450_SY635_SCLZZZZZZZ_.jpg',
-    "readFlag": true,
-  },
-  {
-    "title": 'Dracula',
-    "author": 'Bram Stoker',
-    "publishDate": 1897,
-    "cover": 'https://images-na.ssl-images-amazon.com/images/P/014143984X.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-  }
-]
-
 coverForm.init();
 shelf.init(coverForm);
 addBookForm.init(shelf);
 
-shelf.set(booksArr);
 shelf.render();
 shelf.addBook(
   {

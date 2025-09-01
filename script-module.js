@@ -61,7 +61,7 @@ const Form = function ({
 
     const { title, author } = bookInfo;
     const publishDate = bookInfo["publish-date"];
-    const coverLink = bookInfo["cover-link"];
+    const cover = bookInfo["cover-link"];
     let readFlag;
     bookInfo.readFlag ? readFlag = true : readFlag = false;
 
@@ -69,7 +69,7 @@ const Form = function ({
       title,
       author,
       publishDate,
-      coverLink,
+      cover,
       readFlag,
     };
 

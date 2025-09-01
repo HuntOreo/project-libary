@@ -1,11 +1,3 @@
-// let bookShelf = [];
-
-// Bookshelf elements
-// const shelfElement = document.querySelector('.shelf')
-// const shelfContainerElm = document.createElement('div');
-// shelfContainerElm.classList.toggle('container');
-// shelfElement.appendChild(shelfContainerElm);
-
 const Form = function ({
   formContainer,
   form,
@@ -144,19 +136,29 @@ Object.setPrototypeOf(BookCoverForm.prototype, Form.prototype);
 const Shelf = function (selector) {
   // Add card for handling and setting a bookshelf.
   // will include methods for 
-  // - Adding books to the shelf, removing books, 
-  // - Rendering bookshelf
+  // - removing books, 
 
   this.selector = selector;
   this.books = [];
   const shelfElement = document.querySelector(selector);
 
   this.set = function (booksArr) {
-    this.books = booksArr;
+    const books = booksArr.map(book => new Book({ ...book }));
+    this.books = books;
   }
 
   this.get = function () {
     return this.books;
+  }
+
+  this.init = function () {
+    this.container = document.createElement('div');
+    this.container.classList.toggle('container');
+    shelfElement.appendChild(this.container);
+  }
+
+  this.attachForm = function (form) {
+    this.form = form;
   }
 
   this.addBook = function ({ title, author, publishDate, cover, readFlag }) {
@@ -169,12 +171,85 @@ const Shelf = function (selector) {
     });
 
     this.books.push(book);
+    this.render();
   }
 
-  this.init = function () {
-    this.container = document.createElement('div');
-    this.container.classList.toggle('container');
-    shelfElement.appendChild(this.container);
+  this.render = function () {
+    shelfElement.firstElementChild.textContent = '';
+    for (book of this.books) {
+      buildBookCard(book, this);
+    }
+  }
+
+  this.removeBook = function (card, shelf) {
+    const selectedID = card.dataset.id;
+    const newShelf = shelf.books.filter(book => book.id !== selectedID);
+    shelf.set(newShelf);
+    shelf.render();
+  }
+
+  const buildBookCard = function (book, shelf) {
+    // Build DOM elements
+    const cardElm = document.createElement('div');
+    const cardContainerElm = document.createElement('div');
+    const deleteBtn = document.createElement('button');
+    const buttonsWrapper = document.createElement('div');
+    const readLabel = document.createElement('label');
+    const toggleReadBox = document.createElement('input');
+    const titleElm = document.createElement('h2');
+    const coverWrapper = document.createElement('div');
+    const coverElm = document.createElement('img');
+    const coverUpdateIcon = document.createElement('img');
+    const authorElm = document.createElement('p');
+    const publishDateElm = document.createElement('p');
+
+    toggleReadBox.type = "checkbox";
+    toggleReadBox.checked = book.isRead;
+    toggleReadBox.id = `readCheckbox-${book.id}`;
+    readLabel.htmlFor = `readCheckbox-${book.id}`;
+
+    // Assign CSS classes
+    cardElm.classList.toggle('card');
+    cardContainerElm.classList.toggle('container');
+    deleteBtn.classList.toggle('deleteBtn');
+    buttonsWrapper.classList.toggle('wrapper');
+    toggleReadBox.classList.toggle('readBtn');
+    titleElm.classList.toggle('title');
+    coverWrapper.classList.toggle('wrapper');
+    coverElm.classList.toggle('cover');
+    coverUpdateIcon.classList.toggle('coverUpdateIcon');
+    if (book.isRead) { cardElm.classList.toggle('read') }
+
+    cardElm.dataset.id = book.id;
+
+    // Populate element content
+    deleteBtn.textContent = 'Delete';
+    readLabel.textContent = 'Read'
+    titleElm.textContent = book.title;
+    authorElm.textContent = book.author;
+    publishDateElm.textContent = book.publishDate;
+    coverElm.src = book.cover;
+    coverUpdateIcon.src = './img/icons/edit-img.svg';
+
+    // Render DOM elements
+    buttonsWrapper.appendChild(deleteBtn);
+    buttonsWrapper.appendChild(readLabel);
+    buttonsWrapper.appendChild(toggleReadBox);
+
+    coverWrapper.appendChild(coverElm);
+    coverWrapper.appendChild(coverUpdateIcon);
+    shelf.container.appendChild(cardElm);
+    cardElm.appendChild(cardContainerElm);
+    cardContainerElm.appendChild(buttonsWrapper);
+    cardContainerElm.appendChild(titleElm);
+    cardContainerElm.appendChild(coverWrapper);
+    cardContainerElm.appendChild(authorElm);
+    cardContainerElm.appendChild(publishDateElm);
+
+    shelf.form.setEvent(coverWrapper, book);
+    deleteBtn.addEventListener('click', () => {
+      shelf.removeBook(cardElm, shelf)
+    });
   }
 }
 
@@ -194,81 +269,6 @@ const Book = function ({ title, author, publishDate, cover }) {
 
   if (cover) { this.cover = cover }
 }
-
-function buildBookCard(book, shelf) {
-
-  // Build DOM elements
-  const cardElm = document.createElement('div');
-  const cardContainerElm = document.createElement('div');
-  const deleteBtn = document.createElement('button');
-  const buttonsWrapper = document.createElement('div');
-  const readLabel = document.createElement('label');
-  const toggleReadBox = document.createElement('input');
-  const titleElm = document.createElement('h2');
-  const coverWrapper = document.createElement('div');
-  const coverElm = document.createElement('img');
-  const coverUpdateIcon = document.createElement('img');
-  const authorElm = document.createElement('p');
-  const publishDateElm = document.createElement('p');
-
-  toggleReadBox.type = "checkbox";
-  toggleReadBox.checked = book.isRead;
-  toggleReadBox.id = `readCheckbox-${book.id}`;
-  readLabel.htmlFor = `readCheckbox-${book.id}`;
-
-  // Assign CSS classes
-  cardElm.classList.toggle('card');
-  cardContainerElm.classList.toggle('container');
-  deleteBtn.classList.toggle('deleteBtn');
-  buttonsWrapper.classList.toggle('wrapper');
-  toggleReadBox.classList.toggle('readBtn');
-  titleElm.classList.toggle('title');
-  coverWrapper.classList.toggle('wrapper');
-  coverElm.classList.toggle('cover');
-  coverUpdateIcon.classList.toggle('coverUpdateIcon');
-  if (book.isRead) { cardElm.classList.toggle('read') }
-
-  cardElm.dataset.id = book.id;
-
-  // Populate element content
-  deleteBtn.textContent = 'Delete';
-  readLabel.textContent = 'Read'
-  titleElm.textContent = book.title;
-  authorElm.textContent = book.author;
-  publishDateElm.textContent = book.publishDate;
-  coverElm.src = book.cover;
-  coverUpdateIcon.src = './img/icons/edit-img.svg';
-
-  // Render DOM elements
-  buttonsWrapper.appendChild(deleteBtn);
-  buttonsWrapper.appendChild(readLabel);
-  buttonsWrapper.appendChild(toggleReadBox);
-
-  coverWrapper.appendChild(coverElm);
-  coverWrapper.appendChild(coverUpdateIcon);
-  shelf.container.appendChild(cardElm);
-  cardElm.appendChild(cardContainerElm);
-  cardContainerElm.appendChild(buttonsWrapper);
-  cardContainerElm.appendChild(titleElm);
-  cardContainerElm.appendChild(coverWrapper);
-  cardContainerElm.appendChild(authorElm);
-  cardContainerElm.appendChild(publishDateElm);
-
-
-  coverForm.setEvent(coverWrapper, book);
-
-}
-
-// Book handlers
-function renderBooks(shelf) {
-  const shelfElem = document.querySelector(shelf.selector);
-  shelfElem.firstElementChild.textContent = '';
-  const books = shelf.get();
-  for (book of books) {
-    buildBookCard(book, shelf);
-  }
-}
-
 
 const addBookForm = new Form({
   formContainer: '.add-book-form',
@@ -301,9 +301,13 @@ const booksArr = [
   }
 ]
 
+shelf.init();
+coverForm.init();
+addBookForm.init();
+
+shelf.attachForm(coverForm);
 shelf.set(booksArr);
-const books = shelf.get();
-console.log(books);
+shelf.render();
 shelf.addBook(
   {
     title: 'The Lightning Thief',
@@ -312,9 +316,3 @@ shelf.addBook(
     cover: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1400602609i/28187.jpg'
   }
 );
-
-coverForm.init();
-addBookForm.init();
-shelf.init();
-
-renderBooks(shelf);

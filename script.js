@@ -1,25 +1,25 @@
-const body = document.querySelector('body');
-let bookShelf = [];
-let selectedCover;
-const shelf = document.querySelector('.shelf')
-const shelfContainerElm = document.createElement('div');
-shelfContainerElm.classList.toggle('container');
-shelf.appendChild(shelfContainerElm);
+// const body = document.querySelector('body');
+// let bookShelf = [];
+// let selectedCover;
+// const shelf = document.querySelector('.shelf')
+// const shelfContainerElm = document.createElement('div');
+// shelfContainerElm.classList.toggle('container');
+// shelf.appendChild(shelfContainerElm);
 
-function renderBooks() {
-  shelf.firstElementChild.textContent = '';
-  for (book of bookShelf) {
-    buildBookCard(book);
-  }
-}
+// function renderBooks() {
+//   shelf.firstElementChild.textContent = '';
+//   for (book of bookShelf) {
+//     buildBookCard(book);
+//   }
+// }
 
-function deleteBook(bookCard) {
-  const markedId = bookCard.dataset.id;
-  const newBookShelf = bookShelf.filter(book => markedId !== book.id);
+// function deleteBook(bookCard) {
+//   const markedId = bookCard.dataset.id;
+//   const newBookShelf = bookShelf.filter(book => markedId !== book.id);
 
-  bookShelf = [...newBookShelf];
-  renderBooks();
-}
+//   bookShelf = [...newBookShelf];
+//   renderBooks();
+// }
 
 function toggleRead(bookCard) {
   bookCard.classList.toggle('read');
@@ -31,7 +31,7 @@ function toggleRead(bookCard) {
   bookShelf[index] = grabbedBook;
 }
 
-renderBooks();
+// renderBooks();
 
 // Form elements
 // const showFormBtn = document.querySelector('.showFormBtn');
@@ -135,7 +135,7 @@ renderBooks();
 //   cardContainerElm.appendChild(publishDateElm);
 
 //   // Apply button functionality
-//   deleteBtn.addEventListener('click', () => deleteBook(cardElm));
+deleteBtn.addEventListener('click', () => deleteBook(cardElm));
 //   toggleReadBox.addEventListener('click', () => toggleRead(cardElm));
 //   coverWrapper.addEventListener('click', () => toggleCoverForm(book));
 // }

@@ -1,10 +1,10 @@
-let bookShelf = [];
+// let bookShelf = [];
 
 // Bookshelf elements
-const shelf = document.querySelector('.shelf')
-const shelfContainerElm = document.createElement('div');
-shelfContainerElm.classList.toggle('container');
-shelf.appendChild(shelfContainerElm);
+// const shelfElement = document.querySelector('.shelf')
+// const shelfContainerElm = document.createElement('div');
+// shelfContainerElm.classList.toggle('container');
+// shelfElement.appendChild(shelfContainerElm);
 
 const Form = function ({
   formContainer,
@@ -24,7 +24,6 @@ const Form = function ({
       toggleForm(this.formContainer);
     });
     this.cancelBtn.addEventListener('click', () => {
-      console.log(this.cancelBtn);
       cancelForm(this.formContainer, toggleForm);
     });
     this.submitBtn.addEventListener('click', (event) => {
@@ -142,16 +141,44 @@ const BookCoverForm = function ({
 Object.create(Form.prototype);
 Object.setPrototypeOf(BookCoverForm.prototype, Form.prototype);
 
-const Shelf = function () {
+const Shelf = function (selector) {
   // Add card for handling and setting a bookshelf.
   // will include methods for 
   // - Adding books to the shelf, removing books, 
   // - Rendering bookshelf
 
+  this.selector = selector;
+  this.books = [];
+  const shelfElement = document.querySelector(selector);
 
+  this.set = function (booksArr) {
+    this.books = booksArr;
+  }
+
+  this.get = function () {
+    return this.books;
+  }
+
+  this.addBook = function ({ title, author, publishDate, cover, readFlag }) {
+    const book = new Book({
+      title,
+      author,
+      publishDate,
+      cover,
+      readFlag
+    });
+
+    this.books.push(book);
+  }
+
+  this.init = function () {
+    this.container = document.createElement('div');
+    this.container.classList.toggle('container');
+    shelfElement.appendChild(this.container);
+  }
 }
 
-const Book = function (title, author, publishDate, cover) {
+const Book = function ({ title, author, publishDate, cover }) {
   this.title = title;
   this.author = author;
   this.publishDate = publishDate;
@@ -168,7 +195,7 @@ const Book = function (title, author, publishDate, cover) {
   if (cover) { this.cover = cover }
 }
 
-function buildBookCard(book) {
+function buildBookCard(book, shelf) {
 
   // Build DOM elements
   const cardElm = document.createElement('div');
@@ -219,7 +246,7 @@ function buildBookCard(book) {
 
   coverWrapper.appendChild(coverElm);
   coverWrapper.appendChild(coverUpdateIcon);
-  shelfContainerElm.appendChild(cardElm);
+  shelf.container.appendChild(cardElm);
   cardElm.appendChild(cardContainerElm);
   cardContainerElm.appendChild(buttonsWrapper);
   cardContainerElm.appendChild(titleElm);
@@ -233,38 +260,15 @@ function buildBookCard(book) {
 }
 
 // Book handlers
-function renderBooks() {
-  shelf.firstElementChild.textContent = '';
-  for (book of bookShelf) {
-    buildBookCard(book);
+function renderBooks(shelf) {
+  const shelfElem = document.querySelector(shelf.selector);
+  shelfElem.firstElementChild.textContent = '';
+  const books = shelf.get();
+  for (book of books) {
+    buildBookCard(book, shelf);
   }
 }
 
-function storeBook({ title, author, publishDate, cover, readFlag }) {
-  let book;
-  if (cover === "") {
-    book = new Book(title, author, publishDate);
-  } else {
-    book = new Book(title, author, publishDate, cover);
-  }
-  if (readFlag) { book.updateReadFlag() };
-
-  bookShelf.push(book);
-}
-
-storeBook({
-  "title": 'Dracula',
-  "author": 'Bram Stoker',
-  "publishDate": 1897,
-  "cover": 'https://images-na.ssl-images-amazon.com/images/P/014143984X.01._SX450_SY635_SCLZZZZZZZ_.jpg'
-});
-storeBook({
-  "title": 'The Hunger Games',
-  "author": 'Suzanne Collins',
-  "publishDate": 2008,
-  "cover": 'https://images-na.ssl-images-amazon.com/images/P/0439023521.01._SX450_SY635_SCLZZZZZZZ_.jpg',
-  "readFlag": true,
-});
 
 const addBookForm = new Form({
   formContainer: '.add-book-form',
@@ -273,14 +277,44 @@ const addBookForm = new Form({
   cancelBtn: '#book-form .cancelBtn',
   displayFormBtn: 'header .showFormBtn'
 });
-
 const coverForm = new BookCoverForm({
   formContainer: '.update-cover-form',
   form: '#cover-form',
   submitBtn: '.updateCoverBtn',
   cancelBtn: '#cover-form .cancelBtn',
 });
+const shelf = new Shelf('.shelf');
+
+const booksArr = [
+  {
+    "title": 'The Hunger Games',
+    "author": 'Suzanne Collins',
+    "publishDate": 2008,
+    "cover": 'https://images-na.ssl-images-amazon.com/images/P/0439023521.01._SX450_SY635_SCLZZZZZZZ_.jpg',
+    "readFlag": true,
+  },
+  {
+    "title": 'Dracula',
+    "author": 'Bram Stoker',
+    "publishDate": 1897,
+    "cover": 'https://images-na.ssl-images-amazon.com/images/P/014143984X.01._SX450_SY635_SCLZZZZZZZ_.jpg'
+  }
+]
+
+shelf.set(booksArr);
+const books = shelf.get();
+console.log(books);
+shelf.addBook(
+  {
+    title: 'The Lightning Thief',
+    author: 'Rick Riordan',
+    publishDate: 1897,
+    cover: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1400602609i/28187.jpg'
+  }
+);
 
 coverForm.init();
 addBookForm.init();
-renderBooks();
+shelf.init();
+
+renderBooks(shelf);

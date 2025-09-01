@@ -13,10 +13,10 @@ const Form = function ({
 
   this.init = function (shelf) {
     this.displayFormBtn.addEventListener('click', () => {
-      toggle(this.container);
+      this.toggle();
     });
     this.cancelBtn.addEventListener('click', () => {
-      cancel(this.container, toggle);
+      this.cancel();
     });
     this.submitBtn.addEventListener('click', (event) => {
       if (requiredCheck(this.form)) {
@@ -26,16 +26,16 @@ const Form = function ({
     });
   }
 
-  const toggle = function (container) {
-    container.classList.toggle('show-form');
-    container.classList.toggle('hide-overflow');
+  this.toggle = function () {
+    this.container.classList.toggle('show-form');
+    this.container.classList.toggle('hide-overflow');
   }
 
-  const cancel = function (form, toggleForm) {
-    const inputs = form.querySelectorAll('input');
+  this.cancel = function () {
+    const inputs = this.form.querySelectorAll('input');
     inputs.forEach(element => element.value = '');
 
-    toggle(form);
+    this.toggle();
   }
 
   const requiredCheck = function (form) {
@@ -74,7 +74,7 @@ const Form = function ({
     };
 
     shelf.addBook(book).render();
-    toggle(this.container);
+    this.toggle();
   }
 }
 
@@ -92,29 +92,19 @@ const BookCoverForm = function ({
       this.shelf = shelf;
       this.book = book;
       this.input.value = this.book.cover;
-      toggle(this.container);
+      this.toggle(this.container);
     });
   }
 
   this.init = function () {
     this.cancelBtn.addEventListener('click', () => {
-      cancel(this.container, this.input)
+      this.cancel(this.container, this.input)
     });
 
     this.submitBtn.addEventListener('click', (event) => {
       event.preventDefault();
       this.submit(this.book, this.input, this.container);
     });
-  }
-
-  const toggle = function (container) {
-    container.classList.toggle('show-form');
-    container.classList.toggle('hide-overflow');
-  }
-
-  const cancel = function (container, input) {
-    input.value = "";
-    toggle(container);
   }
 
   this.submit = function (book, input, container) {
@@ -180,7 +170,6 @@ const Shelf = function (selector) {
     this.books.push(book);
     return this;
   }
-
 
   this.removeBook = function (card, shelf) {
     const selectedID = card.dataset.id;

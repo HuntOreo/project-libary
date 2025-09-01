@@ -177,10 +177,10 @@ function toggleRead(bookCard) {
   bookShelf[index] = grabbedBook;
 }
 
-function toggleBookForm() {
-  addBookForm.classList.toggle('show-form');
-  body.classList.toggle('hide-overflow');
-}
+// function toggleBookForm() {
+//   addBookForm.classList.toggle('show-form');
+//   body.classList.toggle('hide-overflow');
+// }
 
 function toggleCoverForm(book) {
   updateCoverForm.classList.toggle('show-form');

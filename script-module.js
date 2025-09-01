@@ -28,8 +28,10 @@ const Form = function ({
       cancelForm(this.formContainer, toggleForm);
     });
     this.submitBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-      submitForm(this.formContainer, this.form, toggleForm);
+      if (requiredCheck(this.form)) {
+        event.preventDefault();
+        submitForm(this.formContainer, this.form, toggleForm);
+      }
     });
   }
 
@@ -43,6 +45,19 @@ const Form = function ({
     inputs.forEach(element => element.value = '');
 
     toggleForm(form);
+  }
+
+  const requiredCheck = function (form) {
+    const inputs = form.querySelectorAll('input[required]');
+
+    let requiredFlag = true;
+    for (input of inputs) {
+      if (input.value === '') {
+        requiredFlag = false;
+      }
+    }
+
+    return requiredFlag;
   }
 
   const submitForm = function (formContainer, form, toggleForm) {
@@ -132,6 +147,8 @@ const Shelf = function () {
   // will include methods for 
   // - Adding books to the shelf, removing books, 
   // - Rendering bookshelf
+
+
 }
 
 const Book = function (title, author, publishDate, cover) {

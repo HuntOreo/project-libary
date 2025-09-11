@@ -1,11 +1,4 @@
 class Form {
-  #shelf
-  #container
-  form
-  #submitBtn
-  #cancelBtn
-  #displayBtn
-
   constructor({
     container,
     form,
@@ -14,22 +7,22 @@ class Form {
     displayBtn
   }, shelf) {
     console.log(shelf)
-    this.#shelf = shelf;
-    this.#container = document.querySelector(container);
-    this.form = document.querySelector(form);
-    this.#submitBtn = document.querySelector(submitBtn);
-    this.#cancelBtn = document.querySelector(cancelBtn);
-    if (displayBtn) this.#displayBtn = document.querySelector(displayBtn);
+    this._shelf = shelf;
+    this._container = document.querySelector(container);
+    this._form = document.querySelector(form);
+    this._submitBtn = document.querySelector(submitBtn);
+    this._cancelBtn = document.querySelector(cancelBtn);
+    if (displayBtn) this._displayBtn = document.querySelector(displayBtn);
 
-    this.#cancelBtn.addEventListener('click', () => { this.cancel(); });
-    this.#submitBtn.addEventListener('click', (event) => {
-      if (this.#requiredCheck(this.form)) {
+    this._cancelBtn.addEventListener('click', () => { this.cancel(); });
+    this._submitBtn.addEventListener('click', (event) => {
+      if (this.#requiredCheck(this._form)) {
         event.preventDefault();
         this.submit();
       }
     });
     if (displayBtn) {
-      this.#displayBtn.addEventListener('click', () => { this.toggle(); });
+      this._displayBtn.addEventListener('click', () => { this.toggle(); });
     }
   }
 
@@ -45,19 +38,19 @@ class Form {
   }
 
   toggle() {
-    this.#container.classList.toggle('show-form');
-    this.#container.classList.toggle('hide-overflow');
+    this._container.classList.toggle('show-form');
+    this._container.classList.toggle('hide-overflow');
   }
 
   cancel() {
-    const inputs = this.form.querySelectorAll('input');
+    const inputs = this._form.querySelectorAll('input');
     inputs.forEach(element => element.value = '');
 
     this.toggle();
   }
 
   submit() {
-    const formData = new FormData(this.form);
+    const formData = new FormData(this._form);
     let bookInfo = {};
 
     for (let i = 0; i < formData.length; i++) {
@@ -78,7 +71,7 @@ class Form {
       readFlag,
     };
 
-    this.#shelf.addBook(book).render();
+    this._shelf.addBook(book).render();
     this.toggle();
   }
 }
@@ -103,94 +96,90 @@ class Book {
 }
 
 class BookCard {
-  // Variables
-  #shelf; #cardElm; #cardContainerElm; #deleteBtn; #buttonsWrapper;
-  #readLabel; #toggleReadBox; #titleElm; #coverWrapper; #coverElm;
-  #coverUpdateIcon; #authorElm; #publishDateElm;
   constructor(book, shelf) {
     this.book = book;
-    this.#shelf = shelf;
-    this.#cardElm = document.createElement('div');
-    this.#cardContainerElm = document.createElement('div');
-    this.#deleteBtn = document.createElement('button');
-    this.#buttonsWrapper = document.createElement('div');
-    this.#readLabel = document.createElement('label');
-    this.#toggleReadBox = document.createElement('input');
-    this.#titleElm = document.createElement('h2');
-    this.#coverWrapper = document.createElement('div');
-    this.#coverElm = document.createElement('img');
-    this.#coverUpdateIcon = document.createElement('img');
-    this.#authorElm = document.createElement('p');
-    this.#publishDateElm = document.createElement('p');
+    this._shelf = shelf;
+    this._cardElm = document.createElement('div');
+    this._cardContainerElm = document.createElement('div');
+    this._deleteBtn = document.createElement('button');
+    this._buttonsWrapper = document.createElement('div');
+    this._readLabel = document.createElement('label');
+    this._toggleReadBox = document.createElement('input');
+    this._titleElm = document.createElement('h2');
+    this._coverWrapper = document.createElement('div');
+    this._coverElm = document.createElement('img');
+    this._coverUpdateIcon = document.createElement('img');
+    this._authorElm = document.createElement('p');
+    this._publishDateElm = document.createElement('p');
 
     this.#handleReadBox();
     this.#assignClasses();
 
     // Assign ID
-    this.#cardElm.dataset.id = this.book.id;
+    this._cardElm.dataset.id = this.book.id;
 
     this.#populateElements();
     this.#attachEvents();
   }
 
   #handleReadBox() {
-    this.#toggleReadBox.type = "checkbox";
-    this.#toggleReadBox.checked = this.book.isRead;
-    this.#toggleReadBox.id = `readCheckbox-${this.book.id}`;
-    this.#readLabel.htmlFor = `readCheckbox-${this.book.id}`;
+    this._toggleReadBox.type = "checkbox";
+    this._toggleReadBox.checked = this.book.isRead;
+    this._toggleReadBox.id = `readCheckbox-${this.book.id}`;
+    this._readLabel.htmlFor = `readCheckbox-${this.book.id}`;
   }
 
   #assignClasses() {
-    this.#cardElm.classList.toggle('card');
-    this.#cardContainerElm.classList.toggle('container');
-    this.#deleteBtn.classList.toggle('deleteBtn');
-    this.#buttonsWrapper.classList.toggle('wrapper');
-    this.#toggleReadBox.classList.toggle('readBtn');
-    this.#titleElm.classList.toggle('title');
-    this.#coverWrapper.classList.toggle('wrapper');
-    this.#coverElm.classList.toggle('cover');
-    this.#coverUpdateIcon.classList.toggle('coverUpdateIcon');
-    if (this.book.isRead) { this.#cardElm.classList.toggle('read') }
+    this._cardElm.classList.toggle('card');
+    this._cardContainerElm.classList.toggle('container');
+    this._deleteBtn.classList.toggle('deleteBtn');
+    this._buttonsWrapper.classList.toggle('wrapper');
+    this._toggleReadBox.classList.toggle('readBtn');
+    this._titleElm.classList.toggle('title');
+    this._coverWrapper.classList.toggle('wrapper');
+    this._coverElm.classList.toggle('cover');
+    this._coverUpdateIcon.classList.toggle('coverUpdateIcon');
+    if (this.book.isRead) { this._cardElm.classList.toggle('read') }
   }
 
   #populateElements() {
-    this.#deleteBtn.textContent = 'Delete';
-    this.#readLabel.textContent = 'Read'
-    this.#titleElm.textContent = this.book.title;
-    this.#authorElm.textContent = this.book.author;
-    this.#publishDateElm.textContent = this.book.publishDate;
-    this.#coverElm.src = this.book.cover;
-    this.#coverUpdateIcon.src = './img/icons/edit-img.svg';
+    this._deleteBtn.textContent = 'Delete';
+    this._readLabel.textContent = 'Read'
+    this._titleElm.textContent = this.book.title;
+    this._authorElm.textContent = this.book.author;
+    this._publishDateElm.textContent = this.book.publishDate;
+    this._coverElm.src = this.book.cover;
+    this._coverUpdateIcon.src = './img/icons/edit-img.svg';
   }
 
   #attachEvents() {
-    this.#deleteBtn.addEventListener('click', () => {
-      this.#shelf.removeBook(this.#cardElm, this.#shelf).render();
+    this._deleteBtn.addEventListener('click', () => {
+      this._shelf.removeBook(this._cardElm, this._shelf).render();
     });
-    this.#toggleReadBox.addEventListener('click', () => {
+    this._toggleReadBox.addEventListener('click', () => {
       this.book.updateReadFlag();
-      this.#shelf.updateBook(this.book).render();
+      this._shelf.updateBook(this.book).render();
     })
   }
 
   render() {
-    this.#buttonsWrapper.appendChild(this.#deleteBtn);
-    this.#buttonsWrapper.appendChild(this.#readLabel);
-    this.#buttonsWrapper.appendChild(this.#toggleReadBox);
-    this.#coverWrapper.appendChild(this.#coverElm);
-    this.#coverWrapper.appendChild(this.#coverUpdateIcon);
-    this.#shelf.container.appendChild(this.#cardElm);
-    this.#cardElm.appendChild(this.#cardContainerElm);
-    this.#cardContainerElm.appendChild(this.#buttonsWrapper);
-    this.#cardContainerElm.appendChild(this.#titleElm);
-    this.#cardContainerElm.appendChild(this.#coverWrapper);
-    this.#cardContainerElm.appendChild(this.#authorElm);
-    this.#cardContainerElm.appendChild(this.#publishDateElm);
+    this._buttonsWrapper.appendChild(this._deleteBtn);
+    this._buttonsWrapper.appendChild(this._readLabel);
+    this._buttonsWrapper.appendChild(this._toggleReadBox);
+    this._coverWrapper.appendChild(this._coverElm);
+    this._coverWrapper.appendChild(this._coverUpdateIcon);
+    this._shelf.container.appendChild(this._cardElm);
+    this._cardElm.appendChild(this._cardContainerElm);
+    this._cardContainerElm.appendChild(this._buttonsWrapper);
+    this._cardContainerElm.appendChild(this._titleElm);
+    this._cardContainerElm.appendChild(this._coverWrapper);
+    this._cardContainerElm.appendChild(this._authorElm);
+    this._cardContainerElm.appendChild(this._publishDateElm);
   }
 }
 
 class Shelf {
-  #container;
+  _container;
   #books = [];
   constructor() {
     this.element = document.querySelector('.shelf');
@@ -211,11 +200,11 @@ class Shelf {
   }
 
   set container(element) {
-    this.#container = element;
+    this._container = element;
   }
 
   get container() {
-    return this.#container;
+    return this._container;
   }
 
   getBook(id) {
@@ -273,9 +262,9 @@ const addBookForm = new Form({
 
 const coverForm = new Form({
   container: '.update-cover-form',
-  form: '#cover-form',
+  form: '_cover-form',
   submitBtn: '.updateCoverBtn',
-  cancelBtn: '#cover-form .cancelBtn',
+  cancelBtn: '_cover-form .cancelBtn',
 }, shelf);
 
 shelf.addBook(

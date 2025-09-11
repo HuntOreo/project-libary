@@ -95,6 +95,8 @@ class Book {
   }
 }
 
+// TODO //
+// refactor code to utalize the <template> html tag for simplifed dom manipulation.
 class BookCard {
   constructor(book, shelf) {
     this.book = book;

@@ -12,6 +12,7 @@ class Form {
     this._form = document.querySelector(form);
     this._submitBtn = document.querySelector(submitBtn);
     this._cancelBtn = document.querySelector(cancelBtn);
+    console.log(cancelBtn);
     if (displayBtn) this._displayBtn = document.querySelector(displayBtn);
 
     this._cancelBtn.addEventListener('click', () => { this.cancel(); });
@@ -181,9 +182,9 @@ class BookCard {
 }
 
 class Shelf {
-  _container;
   #books = [];
   constructor() {
+    this.template = document.querySelector('#card-template');
     this.element = document.querySelector('.shelf');
 
     const containerEl = document.createElement('div');
@@ -264,9 +265,9 @@ const addBookForm = new Form({
 
 const coverForm = new Form({
   container: '.update-cover-form',
-  form: '_cover-form',
+  form: '#cover-form',
   submitBtn: '.updateCoverBtn',
-  cancelBtn: '_cover-form .cancelBtn',
+  cancelBtn: '#cover-form .cancelBtn',
 }, shelf);
 
 shelf.addBook(

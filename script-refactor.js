@@ -12,8 +12,9 @@ class Form {
     submitBtn,
     cancelBtn,
     displayBtn
-  }) {
-    this.#shelf = document.querySelector('.shelf');
+  }, shelf) {
+    console.log(shelf)
+    this.#shelf = shelf;
     this.#container = document.querySelector(container);
     this.form = document.querySelector(form);
     this.#submitBtn = document.querySelector(submitBtn);
@@ -260,22 +261,22 @@ class Shelf {
   }
 }
 
+const shelf = new Shelf();
+
 const addBookForm = new Form({
   container: '.add-book-form',
   form: '#book-form',
   submitBtn: '.addBookBtn',
   cancelBtn: '#book-form .cancelBtn',
-  displayBtn: 'header .showFormBtn'
-});
+  displayBtn: 'header .showFormBtn',
+}, shelf);
 
 const coverForm = new Form({
   container: '.update-cover-form',
   form: '#cover-form',
   submitBtn: '.updateCoverBtn',
   cancelBtn: '#cover-form .cancelBtn',
-});
-
-const shelf = new Shelf();
+}, shelf);
 
 shelf.addBook(
   {

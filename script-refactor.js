@@ -29,6 +29,10 @@ class Form {
     return this._container;
   }
 
+  set book(book) {
+    this._book = book;
+  }
+
   #requiredCheck(form) {
     const inputs = form.querySelectorAll('input[required]');
     let requiredFlag = true;
@@ -56,26 +60,34 @@ class Form {
     const formData = new FormData(this._form);
     let bookInfo = {};
 
-    for (const entry of formData.entries()) {
-      bookInfo[entry[0]] = entry[1];
+    if (formData.get('title')) {
+      for (const entry of formData.entries()) {
+        bookInfo[entry[0]] = entry[1];
+      }
+
+      const { title, author } = bookInfo;
+      const publishDate = bookInfo["publish-date"];
+      const cover = bookInfo["coverLink"];
+      let readFlag;
+      bookInfo.readFlag ? readFlag = true : readFlag = false;
+
+      const book = {
+        title,
+        author,
+        publishDate,
+        cover,
+        readFlag,
+      };
+
+      this._shelf.addBook(book).render();
+      this.toggle();
+    } else {
+      const link = formData.get('coverLink');
+      this._book.cover = link;
+      this._shelf.updateBook(this._book);
+      this.toggle();
+      this._shelf.render();
     }
-
-    const { title, author } = bookInfo;
-    const publishDate = bookInfo["publish-date"];
-    const cover = bookInfo["cover-link"];
-    let readFlag;
-    bookInfo.readFlag ? readFlag = true : readFlag = false;
-
-    const book = {
-      title,
-      author,
-      publishDate,
-      cover,
-      readFlag,
-    };
-
-    this._shelf.addBook(book).render();
-    this.toggle();
   }
 }
 
@@ -84,17 +96,21 @@ class Book {
     this.title = title;
     this.author = author;
     this.publishDate = publishDate;
-    cover ? this.cover = cover : this.cover = './img/placeholder.png';
+    cover ? this._cover = cover : this._cover = './img/placeholder.png';
     readFlag ? this.isRead = readFlag : this.isRead = false;
     this.id = crypto.randomUUID();
   }
 
-  updateReadFlag() {
-    this.isRead = !this.isRead;
+  set cover(link) {
+    this._cover = link;
   }
 
-  updateCover(link) {
-    this.cover = link;
+  get cover() {
+    return this._cover;
+  }
+
+  updateReadFlag() {
+    this.isRead = !this.isRead;
   }
 }
 
@@ -160,7 +176,10 @@ class BookCard {
       this._card.classList.toggle('read');
     })
     this._coverIcon.addEventListener('click', () => {
+      this._form.book = this.book;
       this.form.container.classList.toggle('show-form');
+      const input = document.querySelector('#cover-form input');
+      input.value = this.book.cover;
     })
   }
 
@@ -208,8 +227,8 @@ class Shelf {
     });
   }
 
-  updateBook(newBook, id) {
-    const index = this.getBook(id).index;
+  updateBook(newBook) {
+    const index = this.getBook(newBook.id).index;
     let newBooks = [...this.#books];
     newBooks[index] = newBook;
     this.#books = newBooks;

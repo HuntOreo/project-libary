@@ -117,6 +117,10 @@ class BookCard {
     this._author = clone.querySelector('.author');
     this._date = clone.querySelector('.date');
 
+    if (book.isRead) {
+      this._card.classList.add('read');
+      this._checkBox.checked = book.isRead;
+    }
     this.#populateElements();
     this.#assignID();
   }
@@ -147,11 +151,13 @@ class BookCard {
 
   #attachEvents() {
     this._deleteBtn.addEventListener('click', () => {
-      this._shelf.removeBook(this._cardElm, this._shelf).render();
+      this._shelf.removeBook(this._card, this._shelf).render();
     });
     this._checkBox.addEventListener('click', () => {
       this.book.updateReadFlag();
-      this._shelf.updateBook(this.book).render();
+      this._shelf.updateBook(this.book);
+      this._checkBox.checked = this.book.isRead;
+      this._card.classList.toggle('read');
     })
     this._coverIcon.addEventListener('click', () => {
       this.form.container.classList.toggle('show-form');

@@ -17,6 +17,7 @@ const Form = function ({
     });
     this.cancelBtn.addEventListener('click', () => {
       this.cancel();
+
     });
     this.submitBtn.addEventListener('click', (event) => {
       if (requiredCheck(this.form)) {
@@ -98,7 +99,7 @@ const BookCoverForm = function ({
 
   this.init = function () {
     this.cancelBtn.addEventListener('click', () => {
-      this.cancel(this.container, this.input)
+      this.cancel()
     });
 
     this.submitBtn.addEventListener('click', (event) => {
@@ -123,7 +124,6 @@ const BookCoverForm = function ({
   }
 }
 
-Object.create(Form.prototype);
 Object.setPrototypeOf(BookCoverForm.prototype, Form.prototype);
 
 const Shelf = function (selector) {
@@ -297,7 +297,6 @@ coverForm.init();
 shelf.init(coverForm);
 addBookForm.init(shelf);
 
-shelf.render();
 shelf.addBook(
   {
     title: 'The Lightning Thief',
